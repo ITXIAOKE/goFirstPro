@@ -33,5 +33,7 @@ func main() {
 	fmt.Println("---")
 	readFile2()
 	fmt.Println("---")
+	fmt.Println("---")
+	fmt.Println("---")
 
 }
