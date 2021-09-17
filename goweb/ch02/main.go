@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 // 框架核心结构
 
@@ -16,6 +19,7 @@ func NewCore() *Core {
 // 框架核心结构实现Handler接口
 func (c *Core) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 	// TODO
+	fmt.Println("asddsfsdfsf")
 }
 
 func main() {
