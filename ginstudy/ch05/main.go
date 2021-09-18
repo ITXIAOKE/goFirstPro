@@ -7,7 +7,7 @@ import (
 )
 
 type Person struct {
-	//ID   string `uri:"id" binding:"required,uuid"`
+	//ID   string `uri:"id" binding:"required,uuid"`//这个是uuid的id
 	ID   int    `uri:"id" binding:"required"`
 	Name string `uri:"name" binding:"required"`
 }
