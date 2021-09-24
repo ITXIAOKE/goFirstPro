@@ -17,7 +17,7 @@ func Fibonacci() func() int {
 
 type intGen func() int //函数
 
-func (g intGen) Read(p []byte) (n int, err error) {
+func (g intGen) Read(p []byte) (n int, err error) {//为函数实现接口
 	next := g()
 	if next > 10000 {
 		return 0, io.EOF
