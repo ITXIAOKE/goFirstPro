@@ -33,6 +33,9 @@ func (q *Queue) Dequeue() string { //消费者
 }
 
 func main() {
+	/**
+	使用cond实现生产者和消费者
+	*/
 	q := Queue{
 		queue: []string{},
 		cond:  sync.NewCond(&sync.Mutex{}),
