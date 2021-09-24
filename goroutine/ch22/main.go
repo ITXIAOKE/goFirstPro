@@ -32,14 +32,15 @@ func main() {
 	//context应用场景
 
 	ctx, cancel := context.WithCancel(context.Background())
-	//context.WithDeadline()
-	//context.WithTimeout()
+	//context.WithDeadline()//一个时间点取消
+	//context.WithTimeout()//一个时间后，取消，自动取消，不需要手动调用，也可以自己手动取消
 	//context.WithValue()
 	wg.Add(1)
 
 	go cpuInfo(ctx)
 	time.Sleep(time.Second * 6)
-	cancel()
+
+	cancel() //手动调用取消
 
 	wg.Wait()
 
