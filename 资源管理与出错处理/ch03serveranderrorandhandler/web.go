@@ -13,6 +13,7 @@ import (
 type appHandler func(writer http.ResponseWriter, request *http.Request) error
 
 func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
+
 	return func(writer http.ResponseWriter, request *http.Request) {
 		// panic
 		defer func() {
@@ -22,14 +23,14 @@ func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
 			}
 		}()
 
-		err := handler(writer, request)
+		err := handler(writer, request) //做统一的业务逻辑处理
 
 		if err != nil {
 			log.Printf("Error occurred "+"handling request: %s", err.Error())
 
 			// user error
 			if userErr, ok := err.(userError); ok {
-				http.Error(writer, userErr.Message(), http.StatusBadRequest)
+				http.Error(writer, userErr.Message(), http.StatusBadRequest) //给用户的message
 				return
 			}
 
@@ -49,8 +50,8 @@ func errWrapper(handler appHandler) func(http.ResponseWriter, *http.Request) {
 }
 
 type userError interface {
-	error
-	Message() string
+	error            //给系统看的
+	Message() string //给用户看的
 }
 
 func main() {
@@ -73,8 +74,8 @@ func (e userErrorMy) Error() string {
 func (e userErrorMy) Message() string {
 	return string(e)
 }
+
 func HandleFileList(writer http.ResponseWriter, request *http.Request) error {
-	fmt.Println()
 	if strings.Index(request.URL.Path, prefix) != 0 {
 		return userErrorMy(fmt.Sprintf("path %s must start "+"with %s", request.URL.Path, prefix))
 	}

@@ -10,7 +10,7 @@ import (
 
 const prefix = "/list/"
 
-type userError string
+type userError string//自己的
 
 func (e userError) Error() string {
 	return e.Message()
