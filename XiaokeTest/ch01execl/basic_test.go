@@ -36,6 +36,11 @@ func TestTriangle(t *testing.T) { //覆盖率
 2，go tool pprof cpu.out
 3，分析慢在哪里？那个框大，那里耗时就多
 4，优化代码
+
+godoc -http :6060
+
+在测试文件中加入Example生成实例代码：
+func ExampleQueue(){}
 */
 func BenchmarkTriangle(b *testing.B) { // 性能测试
 	tests := []struct{ a, b, c int }{
