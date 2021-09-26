@@ -6,9 +6,10 @@ import (
 )
 
 func main() {
-	server:=&http.Server{
+	//net/http：使用标准库搭建server
+	server := &http.Server{
 		Handler: framework.NewCore(),
-		Addr: "localhost:8080",
+		Addr:    "localhost:8080",
 	}
 	server.ListenAndServe()
 }

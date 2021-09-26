@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	//增加路由：如何让请求更快寻找到目标函数
 	core:=framework.NewCore()
 	registerRouter(core)
 	server := &http.Server{
