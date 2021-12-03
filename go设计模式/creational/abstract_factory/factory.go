@@ -28,6 +28,8 @@ type LunchFactory interface {
 type simpleLunchFactory struct {
 }
 
+//当一个结构体具备接口的所有的方法的时候，它就实现了这个接口
+
 func NewSimpleShapeFactory() LunchFactory {
 	return &simpleLunchFactory{}
 }

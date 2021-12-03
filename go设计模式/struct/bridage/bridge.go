@@ -13,14 +13,14 @@ type RedCircle struct {
 }
 
 func (g *RedCircle) DrawCircle(radius, x, y int) {
-	fmt.Println("radius、x、y:", radius, x, y)
+	fmt.Println("RedCircle radius、x、y:", radius, x, y)
 }
 
 type YellowCircle struct {
 }
 
 func (g *YellowCircle) DrawCircle(radius, x, y int) {
-	fmt.Println("radius、x、y:", radius, x, y)
+	fmt.Println("YellowCircle radius、x、y:", radius, x, y)
 }
 
 type Shape struct {

@@ -7,6 +7,13 @@ type Person struct {
 	cmd  Command
 }
 
+func NewPerson(name string, cmd Command) Person {
+	return Person{
+		name: name,
+		cmd:  cmd,
+	}
+}
+
 type Command struct {
 	person *Person
 	method func()
@@ -18,16 +25,13 @@ func NewCommand(p *Person, method func()) Command {
 		method: method,
 	}
 }
+
+
 func (c *Command) Execute() {
 	c.method()
 }
 
-func NewPerson(name string, cmd Command) Person {
-	return Person{
-		name: name,
-		cmd:  cmd,
-	}
-}
+
 
 func (p *Person) Buy() {
 	fmt.Println(fmt.Sprintf("%s is buying ", p.name))
