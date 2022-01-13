@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ginstudy.com/ch07/proto"
+	"ginstudy.com/v1/ch07/proto"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
