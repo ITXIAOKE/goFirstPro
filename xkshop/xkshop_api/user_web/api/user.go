@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 	"net/http"
 	"time"
+	"xkshop/v1/xkshop_api/user_web/global"
 	"xkshop/v1/xkshop_api/user_web/global/response"
 	"xkshop/v1/xkshop_srv/user_srv/proto"
 )
@@ -49,10 +50,10 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context) {
 //获取用户列表接口数据
 
 func GetUserList(ctx *gin.Context) {
-	ip := "127.0.0.1"
-	port := 50051
+	//ip := "127.0.0.1"
+	//port := 50051
 	//拨号连接用户grpc服务
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", ip, port), grpc.WithInsecure())
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host, global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
 	if err != nil {
 		zap.S().Errorw("【GetUserList】连接【用户服务失败】",
 			"msg", err.Error(),
