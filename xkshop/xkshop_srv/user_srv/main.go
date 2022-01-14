@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	handler2 "xkshop/v1/xkshop_srv/user_srv/handler"
+	proto2 "xkshop/v1/xkshop_srv/user_srv/proto"
 
 	"google.golang.org/grpc"
 	"net"
-	"xkshop/v1/user_srv/handler"
-	"xkshop/v1/user_srv/proto"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	fmt.Println("默认port:", *Port)
 
 	server := grpc.NewServer()
-	proto.RegisterUserServer(server, &handler.UserServer{})
+	proto2.RegisterUserServer(server, &handler2.UserServer{})
 	listen, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
 	if err != nil {
 		panic("failed to listen:" + err.Error())

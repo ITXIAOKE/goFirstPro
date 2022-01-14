@@ -14,7 +14,7 @@ import (
 	"log"
 	"os"
 	"time"
-	"xkshop/v1/user_srv/model"
+	model2 "xkshop/v1/xkshop_srv/user_srv/model"
 
 	//"github.com/sethvargo/go-password/password"
 
@@ -60,7 +60,7 @@ func main() {
 	pwd := fmt.Sprintf("$pbkdf2-sha512$%s$%s", salt, encodedPwd) //生产用的password
 
 	for i := 0; i < 10; i++ {
-		user := model.User{
+		user := model2.User{
 			NickName: fmt.Sprintf("xiaoke%d", i),
 			Mobile:   fmt.Sprintf("1511234567%d", i),
 			Password: pwd,
@@ -75,7 +75,7 @@ func main() {
 	}
 
 	//生成表
-	err = db.AutoMigrate(&model.User{})
+	err = db.AutoMigrate(&model2.User{})
 	//if err != nil {
 	//	panic(err)
 	//}

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"testing"
-	"xkshop/v1/user_srv/proto"
+	proto2 "xkshop/v1/xkshop_srv/user_srv/proto"
 )
 
-var userClient proto.UserClient
+var userClient proto2.UserClient
 var conn *grpc.ClientConn
 var err error
 
@@ -20,9 +20,9 @@ func TestGetUserList(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	userClient = proto.NewUserClient(conn)
+	userClient = proto2.NewUserClient(conn)
 
-	rsp, err := userClient.GetUserList(context.Background(), &proto.PageInfoRequest{
+	rsp, err := userClient.GetUserList(context.Background(), &proto2.PageInfoRequest{
 		Pn:    1,
 		PSize: 3,
 	})
@@ -33,7 +33,7 @@ func TestGetUserList(t *testing.T) {
 	for _, user := range rsp.Data {
 
 		fmt.Println(user.NickName, user.Id, user.Mobile, user.PassWord)
-		checkRsp, err := userClient.CheckPassword(context.Background(), &proto.PasswordCheckInfo{
+		checkRsp, err := userClient.CheckPassword(context.Background(), &proto2.PasswordCheckInfo{
 			PassWord:          "admin123",
 			EncryptedPassword: user.PassWord,
 		})
@@ -53,10 +53,10 @@ func TestCreateUser(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	userClient = proto.NewUserClient(conn)
+	userClient = proto2.NewUserClient(conn)
 
 	for i := 0; i < 10; i++ {
-		rsp, err := userClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+		rsp, err := userClient.CreateUser(context.Background(), &proto2.CreateUserInfo{
 			NickName: fmt.Sprintf("keke%d", i),
 			Mobile:   fmt.Sprintf("1882222333%d", i),
 			PassWord: "xiaoke521",
