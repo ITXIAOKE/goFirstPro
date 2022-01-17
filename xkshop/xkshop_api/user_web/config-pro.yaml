@@ -4,5 +4,14 @@ user_srv:
   host: "127.0.0.1"
   port: 50051
 
-jmt:
+jwt:
   key: "f8s4sKt5G#oCi#qy1XczdKmeC#1Q%*nE"
+
+sms:
+  key: ""
+  secret: ""
+  expire: 300
+
+redis:
+  host: "127.0.0.1"
+  port: 6379

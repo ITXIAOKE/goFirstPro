@@ -6,6 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -19,7 +20,7 @@ import (
 	"xkshop/v1/xkshop_api/user_web/global/response"
 	"xkshop/v1/xkshop_api/user_web/middlewares"
 	"xkshop/v1/xkshop_api/user_web/models"
-	"xkshop/v1/xkshop_srv/user_srv/proto"
+	"xkshop/v1/xkshop_api/user_web/proto"
 )
 
 func removeTopStruct(fields map[string]string) map[string]string {
@@ -80,13 +81,17 @@ func HandleValidatorError(c *gin.Context, err error) {
 func GetUserList(ctx *gin.Context) {
 	//ip := "127.0.0.1"
 	//port := 50051
-	//拨号连接用户grpc服务
+	//拨号连接用户grpc服务  有一个跨域的问题options
 	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host, global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
 	if err != nil {
 		zap.S().Errorw("【GetUserList】连接【用户服务失败】",
 			"msg", err.Error(),
 		)
 	}
+	//url加鉴权后，登录拿到用户id
+	claims, _ := ctx.Get("claims")
+	currentUser := claims.(*models.CustomClaims)
+	zap.S().Infof("鉴权登录后，访问的用户Id是：%d", currentUser.ID)
 	//生成grpc的client并调用接口
 	userSrvClient := proto.NewUserClient(userConn)
 
@@ -143,6 +148,14 @@ func PassWordLogin(c *gin.Context) {
 		return
 	}
 
+	//图片验证码验证，true是每次验证完毕后，自动清理,仅验证一次，第二次就错误
+	if !store.Verify(passWordLoginForm.CaptchaID, passWordLoginForm.Captcha, true) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"captcha": "验证码错误",
+		})
+		return
+	}
+
 	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host,
 		global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
 	if err != nil {
@@ -189,7 +202,7 @@ func PassWordLogin(c *gin.Context) {
 					StandardClaims: jwt.StandardClaims{
 						NotBefore: time.Now().Unix(),               //签名的生效实践
 						ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
-						Issuer:    "xiaoke",
+						Issuer:    "xiaoke签名机构",                    //哪个机构进行签名
 					},
 				}
 				token, err := j.CreateToken(claims)
@@ -215,4 +228,72 @@ func PassWordLogin(c *gin.Context) {
 
 	}
 
+}
+
+//用户注册
+
+func Register(c *gin.Context) {
+	//用户注册
+	registerForm := forms.RegisterForm{}
+	if err := c.ShouldBind(&registerForm); err != nil {
+		HandleValidatorError(c, err)
+		return
+	}
+
+	//验证码校验
+	rdb := redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf("%s:%d", global.ServerConfig.RedisInfo.Host, global.ServerConfig.RedisInfo.Port),
+	})
+	value, err := rdb.Get(context.Background(), registerForm.Mobile).Result()
+	if err == redis.Nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": "验证码错误",
+		})
+		return
+	} else {
+		if value != registerForm.Code {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code": "验证码错误",
+			})
+			return
+		}
+	}
+
+	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+		NickName: registerForm.Mobile,
+		PassWord: registerForm.PassWord,
+		Mobile:   registerForm.Mobile,
+	})
+
+	if err != nil {
+		zap.S().Errorf("[Register] 查询 【新建用户失败】失败: %s", err.Error())
+		HandleGrpcErrorToHttp(err, c)
+		return
+	}
+
+	j := middlewares.NewJWT()
+	claims := models.CustomClaims{
+		ID:          uint(user.Id),
+		NickName:    user.NickName,
+		AuthorityId: uint(user.Role),
+		StandardClaims: jwt.StandardClaims{
+			NotBefore: time.Now().Unix(),               //签名的生效时间
+			ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
+			Issuer:    "imooc",
+		},
+	}
+	token, err := j.CreateToken(claims)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"msg": "生成token失败",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":         user.Id,
+		"nick_name":  user.NickName,
+		"token":      token,
+		"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
+	})
 }
