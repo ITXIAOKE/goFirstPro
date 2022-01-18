@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
+	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -78,11 +79,40 @@ func HandleValidatorError(c *gin.Context, err error) {
 
 //获取用户列表接口数据
 
-func GetUserList(ctx *gin.Context) {
+func GetUserList222yuanshi(ctx *gin.Context) {
 	//ip := "127.0.0.1"
 	//port := 50051
+	//从注册中心consul中获取用户服务的信息
+	cfg := api.DefaultConfig()
+	consulInfo := global.ServerConfig.ConsulInfo
+	cfg.Address = fmt.Sprintf("%s:%d", consulInfo.Host, consulInfo.Port)
+
+	userSrvHost := ""
+	userSrvPort := 0
+
+	client, err := api.NewClient(cfg)
+	if err != nil {
+		panic(err)
+	}
+
+	data, err := client.Agent().ServicesWithFilter(fmt.Sprintf("Service == \"%s\"", global.ServerConfig.UserSrvConfig.Name))
+	if err != nil {
+		panic(err)
+	}
+	for _, value := range data {
+		userSrvHost = value.Address
+		userSrvPort = value.Port
+		break
+	}
+	if userSrvHost == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"msg": "用户服务不可达",
+		})
+		return
+	}
+
 	//拨号连接用户grpc服务  有一个跨域的问题options
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host, global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort), grpc.WithInsecure())
 	if err != nil {
 		zap.S().Errorw("【GetUserList】连接【用户服务失败】",
 			"msg", err.Error(),
@@ -138,6 +168,55 @@ func GetUserList(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+func GetUserList(ctx *gin.Context) {
+	//url加鉴权后，登录拿到用户id
+	claims, _ := ctx.Get("claims")
+	currentUser := claims.(*models.CustomClaims)
+	zap.S().Infof("鉴权登录后，访问的用户Id是：%d", currentUser.ID)
+
+	//获取前端传进来的页码和每页显示数据条数
+	pn := ctx.DefaultQuery("pn", "0")
+	pnInt, _ := strconv.Atoi(pn)
+	pSize := ctx.DefaultQuery("psize", "10")
+	pSizeInt, _ := strconv.Atoi(pSize)
+
+	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &proto.PageInfoRequest{
+		Pn:    uint32(pnInt),
+		PSize: uint32(pSizeInt),
+	})
+
+	if err != nil {
+		zap.S().Errorw("[GetUserList]查询【用户列表失败】")
+		HandleGrpcErrorToHttp(err, ctx)
+		return
+	}
+
+	result := make([]interface{}, 0)
+	for _, value := range rsp.Data {
+
+		//第一种方式
+		user := response.UserResponse{
+			Id:       value.Id,
+			NickName: value.NickName,
+			//Birthday: time.Time(time.Unix(int64(value.BirthDay), 0)),
+			//Birthday: time.Time(time.Unix(int64(value.BirthDay), 0)).Format("2001-01-01"),
+			Birthday: response.JsonTime(time.Unix(int64(value.BirthDay), 0)),
+			Gender:   value.Gender,
+			Mobile:   value.Mobile,
+		}
+		result = append(result, user)
+		//第二种方式
+		//data := make(map[string]interface{})
+		//data["id"] = value.Id
+		//data["name"] = value.NickName
+		//data["birthday"] = value.BirthDay
+		//data["gender"] = value.Gender
+		//data["mobile"] = value.Mobile
+		//result = append(result, data)
+	}
+	ctx.JSON(http.StatusOK, result)
+}
+
 //密码登陆
 
 func PassWordLogin(c *gin.Context) {
@@ -149,24 +228,15 @@ func PassWordLogin(c *gin.Context) {
 	}
 
 	//图片验证码验证，true是每次验证完毕后，自动清理,仅验证一次，第二次就错误
-	if !store.Verify(passWordLoginForm.CaptchaID, passWordLoginForm.Captcha, true) {
+	if !store.Verify(passWordLoginForm.CaptchaID, passWordLoginForm.Captcha, false) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"captcha": "验证码错误",
 		})
 		return
 	}
 
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvConfig.Host,
-		global.ServerConfig.UserSrvConfig.Port), grpc.WithInsecure())
-	if err != nil {
-		zap.S().Errorw("【GetUserList】连接【用户服务失败】", "msg", err.Error(),
-		)
-	}
-	//生成grpc的client并调用接口
-	userSrvClient := proto.NewUserClient(userConn)
-
 	//登陆的逻辑
-	if rsp, err := userSrvClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
+	if rsp, err := global.UserSrvClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
 		Mobile: passWordLoginForm.Mobile,
 	}); err != nil {
 		if e, ok := status.FromError(err); ok {
@@ -184,7 +254,7 @@ func PassWordLogin(c *gin.Context) {
 		}
 	} else {
 		//只是查询到了用户，下面进行检查密码，
-		if passRsp, passErr := userSrvClient.CheckPassword(context.Background(), &proto.PasswordCheckInfo{
+		if passRsp, passErr := global.UserSrvClient.CheckPassword(context.Background(), &proto.PasswordCheckInfo{
 			PassWord:          passWordLoginForm.PassWord,
 			EncryptedPassword: rsp.PassWord,
 		}); passErr != nil {

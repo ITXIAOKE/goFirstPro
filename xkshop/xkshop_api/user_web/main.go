@@ -31,7 +31,10 @@ func main() {
 		panic(err)
 	}
 
-	//5，注册自定义的手机验证器
+	//5,初始化srv的连接
+	initialize.InitSrvConn()
+
+	//注册自定义的手机验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		_ = v.RegisterValidation("mobile", myValidator.ValidateMobile)
 		_ = v.RegisterTranslation("mobile", global.Trans, func(ut ut.Translator) error {
