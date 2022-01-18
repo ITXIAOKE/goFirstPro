@@ -279,7 +279,7 @@ func Register(c *gin.Context) {
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix(),               //签名的生效时间
 			ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
-			Issuer:    "imooc",
+			Issuer:    "xiaoke",
 		},
 	}
 	token, err := j.CreateToken(claims)

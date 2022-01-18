@@ -14,7 +14,7 @@ func IsAdminAuth() gin.HandlerFunc {
 		claims, _ := ctx.Get("claims")
 		currentUser := claims.(*models.CustomClaims)
 
-		if currentUser.AuthorityId == 3 {
+		if currentUser.AuthorityId == 2 { //根据role的角色，1表示普通用户，2表示管理员
 			ctx.JSON(http.StatusForbidden, gin.H{
 				"msg": "无权限",
 			})
