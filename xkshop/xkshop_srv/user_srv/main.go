@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
+	"xkshop/v1/xkshop_api/user_web/utils"
 	"xkshop/v1/xkshop_srv/user_srv/global"
 	handler2 "xkshop/v1/xkshop_srv/user_srv/handler"
 	"xkshop/v1/xkshop_srv/user_srv/initialize"
@@ -17,7 +18,7 @@ import (
 
 func main() {
 	IP := flag.String("ip", "0.0.0.0", "ip地址")
-	Port := flag.Int("port", 50051, "端口号")
+	Port := flag.Int("port", 0, "端口号")
 
 	//初始化
 	initialize.InitLogger()
@@ -28,6 +29,9 @@ func main() {
 	flag.Parse()
 
 	zap.S().Info("默认ip:", *IP)
+	if *Port == 0 {
+		*Port, _ = utils.GetFreePort()
+	}
 	zap.S().Info("默认port:", *Port)
 
 	server := grpc.NewServer()
@@ -48,7 +52,7 @@ func main() {
 	}
 	//生成对应的检查对象
 	check := &api.AgentServiceCheck{
-		GRPC:                           fmt.Sprintf("192.168.1.101:50051"), //这里必须是这个格式才生效
+		GRPC:                           fmt.Sprintf("192.168.1.101:%d", *Port), //这里必须是这个格式才生效
 		Timeout:                        "5s",
 		Interval:                       "5s",
 		DeregisterCriticalServiceAfter: "15s",
