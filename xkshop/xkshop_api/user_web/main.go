@@ -5,9 +5,11 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"xkshop/v1/xkshop_api/user_web/global"
 	"xkshop/v1/xkshop_api/user_web/initialize"
+	"xkshop/v1/xkshop_api/user_web/utils"
 	myValidator "xkshop/v1/xkshop_api/user_web/validator"
 )
 
@@ -33,6 +35,16 @@ func main() {
 
 	//5,初始化srv的连接
 	initialize.InitSrvConn()
+
+	viper.AutomaticEnv()
+	//如果是本地开发环境端口号固定，线上环境启动获取端口号
+	debug := viper.GetBool("xkshop_debug")
+	if debug {
+		port, err := utils.GetFreePort()
+		if err == nil {
+			global.ServerConfig.Port = port
+		}
+	}
 
 	//注册自定义的手机验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
