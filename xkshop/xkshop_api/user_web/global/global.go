@@ -8,6 +8,7 @@ import (
 
 var (
 	ServerConfig  = &config.ServerConfig{}
+	NacosConfig  = &config.NacosConfig{}
 	Trans         ut.Translator //常量首字母切记要大写
 	UserSrvClient proto.UserClient
 )

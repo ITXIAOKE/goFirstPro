@@ -22,7 +22,7 @@ func InitDB() {
 		logger.Config{
 			SlowThreshold: time.Second, //慢sql阀值
 			LogLevel:      logger.Info,
-			Colorful:      true, //禁用彩色打印
+			Colorful:      false, //禁用彩色打印
 		},
 	)
 

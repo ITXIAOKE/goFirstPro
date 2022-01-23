@@ -4,11 +4,15 @@ import (
 	"flag"
 	"fmt"
 	"github.com/hashicorp/consul/api"
+	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 	"xkshop/v1/xkshop_api/user_web/utils"
 	"xkshop/v1/xkshop_srv/user_srv/global"
 	handler2 "xkshop/v1/xkshop_srv/user_srv/handler"
@@ -55,13 +59,14 @@ func main() {
 		GRPC:                           fmt.Sprintf("192.168.1.101:%d", *Port), //这里必须是这个格式才生效
 		Timeout:                        "5s",
 		Interval:                       "5s",
-		DeregisterCriticalServiceAfter: "15s",
+		DeregisterCriticalServiceAfter: "15s", //注销
 	}
 
 	//生成注册对象
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
-	registration.ID = global.ServerConfig.Name
+	serviceID := fmt.Sprintf("%s", uuid.NewV4())
+	registration.ID = serviceID
 	registration.Port = *Port
 	registration.Tags = []string{"xkshop", "xiaoke", "user", "srv"}
 	registration.Address = "192.168.1.101"
@@ -73,9 +78,19 @@ func main() {
 		panic(err)
 	}
 
-	err = server.Serve(listen)
-	if err != nil {
-		panic("failed to start grpc:" + err.Error())
-	}
+	go func() {
+		err = server.Serve(listen) //这个是阻塞的，必须放在goroutine中，否则后面的代码无法执行
+		if err != nil {
+			panic("failed to start grpc:" + err.Error())
+		}
+	}()
 
+	//接收终止信号   优雅退出
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	if err = client.Agent().ServiceDeregister(serviceID); err != nil {
+		zap.S().Info("注销失败")
+	}
+	zap.S().Info("注销成功")
 }

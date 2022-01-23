@@ -1,11 +1,7 @@
-name: "user_srv"
-mysql:
-  host: "127.0.0.1"
-  port: 3306
-  user: "root"
-  password: "Root-123456"
-  db: "xkshop_user_srv"
-
-consul:
-  host: "192.168.1.101"
-  port: 8500
+host: '192.168.1.101'
+port: 8848
+namespace: '80317df8-5a77-4615-83b6-555905b2078c'
+user: 'nacos'
+password: 'nacos'
+dataid: 'user-srv-dev.json'
+group: 'dev'

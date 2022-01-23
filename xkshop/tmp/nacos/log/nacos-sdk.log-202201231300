@@ -1,0 +1,22 @@
+2022-01-23T13:48:53.244+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldev2dab2277ee7cc5ec970d9ef1cb961ca480317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 Long-Pulling-Timeout-No-Hangup:true accessKey: secretKey:] 
+
+2022-01-23T13:48:53.252+0800	[34mINFO[0m	[client.ListenConfig] no change
+2022-01-23T13:48:53.263+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldev2dab2277ee7cc5ec970d9ef1cb961ca480317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 accessKey: secretKey:] 
+
+2022-01-23T13:49:04.478+0800	[34mINFO[0m	[client.ListenConfig] config changed:user-web-dev.yaml%02dev%0280317df8-5a77-4615-83b6-555905b2078c%01
+
+2022-01-23T13:49:04.493+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldevb8e8aad7ee14a1d217096983c0dc4d3e80317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 accessKey: secretKey:] 
+
+2022-01-23T13:49:33.978+0800	[34mINFO[0m	[client.ListenConfig] no change
+2022-01-23T13:49:33.990+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldevb8e8aad7ee14a1d217096983c0dc4d3e80317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 accessKey: secretKey:] 
+
+2022-01-23T13:50:03.475+0800	[34mINFO[0m	[client.ListenConfig] no change
+2022-01-23T13:50:03.487+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldevb8e8aad7ee14a1d217096983c0dc4d3e80317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 accessKey: secretKey:] 
+
+2022-01-23T13:50:12.543+0800	[34mINFO[0m	[client.ListenConfig] config changed:user-web-dev.yaml%02dev%0280317df8-5a77-4615-83b6-555905b2078c%01
+
+2022-01-23T13:50:12.559+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldev2dab2277ee7cc5ec970d9ef1cb961ca480317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 accessKey: secretKey:] 
+
+2022-01-23T13:50:42.046+0800	[34mINFO[0m	[client.ListenConfig] no change
+2022-01-23T13:50:42.056+0800	[34mINFO[0m	[client.ListenConfig] request params:map[Listening-Configs:user-web-dev.yamldev2dab2277ee7cc5ec970d9ef1cb961ca480317df8-5a77-4615-83b6-555905b2078c tenant:80317df8-5a77-4615-83b6-555905b2078c] header:map[Content-Type:application/x-www-form-urlencoded;charset=utf-8 Long-Pulling-Timeout:30000 accessKey: secretKey:] 
+
