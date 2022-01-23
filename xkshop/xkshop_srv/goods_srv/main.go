@@ -39,7 +39,7 @@ func main() {
 	zap.S().Info("默认port:", *Port)
 
 	server := grpc.NewServer()
-	proto2.RegisterUserServer(server, &handler2.UserServer{})
+	proto2.RegisterGoodsServer(server, &handler2.GoodsServer{})
 	listen, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
 	if err != nil {
 		panic("failed to listen:" + err.Error())
