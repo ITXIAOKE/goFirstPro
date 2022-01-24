@@ -3,7 +3,6 @@ package model
 import (
 	"database/sql/driver"
 	"encoding/json"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -25,6 +24,6 @@ type BaseModel struct {
 	ID        int32      `gorm:"primarykey;type:int"`
 	CreateAt  *time.Time `gorm:"column:add_time"` //所有的time都要使用指针类型的，否则不能插入数据库中，因为这个值可以为null
 	UpdateAt  *time.Time `gorm:"column:update_time"`
-	DeleteAt  gorm.DeletedAt
+	//DeletedAt  gorm.DeletedAt
 	IsDeleted bool `gorm:"column:is_deleted"`
 }

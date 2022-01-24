@@ -56,7 +56,7 @@ func InitConfig() {
 	}
 
 	cc := constant.ClientConfig{
-		NamespaceId:         "80317df8-5a77-4615-83b6-555905b2078c", // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId
+		NamespaceId:         "8b333ee6-aac6-4f0d-b121-09a0bf0f931a", // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId
 		TimeoutMs:           5000,
 		NotLoadCacheAtStart: true,
 		LogDir:              "tmp/nacos/log",   //日志地址

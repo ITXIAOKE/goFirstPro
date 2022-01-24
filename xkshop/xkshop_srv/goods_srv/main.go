@@ -22,7 +22,8 @@ import (
 
 func main() {
 	IP := flag.String("ip", "0.0.0.0", "ip地址")
-	Port := flag.Int("port", 0, "端口号")
+	//Port := flag.Int("port", 0, "端口号")//生产用这种
+	Port := flag.Int("port", 50051, "端口号") //开发用这种固定的端口，方便测试
 
 	//初始化
 	initialize.InitLogger()
@@ -56,7 +57,7 @@ func main() {
 	}
 	//生成对应的检查对象
 	check := &api.AgentServiceCheck{
-		GRPC:                           fmt.Sprintf("192.168.1.101:%d", *Port), //这里必须是这个格式才生效
+		GRPC:                           fmt.Sprintf("%s:%d", global.ServerConfig.Host, *Port), //这里必须是这个格式才生效
 		Timeout:                        "5s",
 		Interval:                       "5s",
 		DeregisterCriticalServiceAfter: "15s", //注销
@@ -65,11 +66,11 @@ func main() {
 	//生成注册对象
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
-	serviceID := fmt.Sprintf("%s", uuid.NewV4())
+	serviceID := fmt.Sprintf("%s", uuid.NewV4()) //id不同就可以生成多个consul实例
 	registration.ID = serviceID
 	registration.Port = *Port
-	registration.Tags = []string{"xkshop", "xiaoke", "user", "srv"}
-	registration.Address = "192.168.1.101"
+	registration.Tags = global.ServerConfig.Tags
+	registration.Address = global.ServerConfig.Host
 	registration.Check = check
 
 	err = client.Agent().ServiceRegister(registration) //注册服务
