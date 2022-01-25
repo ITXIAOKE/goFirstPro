@@ -67,8 +67,8 @@ func (g *GoodsServer) DeleteBanner(ctx context.Context, req *proto.BannerRequest
 
 func (g *GoodsServer) UpdateBanner(ctx context.Context, req *proto.BannerRequest) (*emptypb.Empty, error) {
 	var banner model.Banner
-	if result := global.DB.Delete(&banner); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "品牌不存在")
+	if result := global.DB.First(&banner, req.Id); result.RowsAffected == 0 {
+		return nil, status.Errorf(codes.NotFound, "轮播图不存在")
 	}
 	if req.Url != "" {
 		banner.Url = req.Url

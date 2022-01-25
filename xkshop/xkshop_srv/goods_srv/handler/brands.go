@@ -76,7 +76,7 @@ func (g *GoodsServer) DeleteBrand(ctx context.Context, req *proto.BrandRequest) 
 
 func (g *GoodsServer) UpdateBrand(ctx context.Context, req *proto.BrandRequest) (*emptypb.Empty, error) {
 	brands := model.Brands{}
-	if result := global.DB.Delete(&brands); result.RowsAffected == 0 {
+	if result := global.DB.First(&brands, req.Id); result.RowsAffected == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "品牌不存在")
 	}
 	if req.Name != "" {

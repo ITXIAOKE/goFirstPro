@@ -21,9 +21,9 @@ func (receiver *GormList) Scan(value interface{}) error {
 //公共的model,每个struct都继承这个basemodel
 
 type BaseModel struct {
-	ID        int32      `gorm:"primarykey;type:int"`
-	CreateAt  *time.Time `gorm:"column:add_time"` //所有的time都要使用指针类型的，否则不能插入数据库中，因为这个值可以为null
-	UpdateAt  *time.Time `gorm:"column:update_time"`
-	//DeletedAt  gorm.DeletedAt
-	IsDeleted bool `gorm:"column:is_deleted"`
+	ID        int32          `gorm:"primarykey;type:int" json:"id"`
+	CreateAt  *time.Time     `gorm:"column:add_time" json:"-"` //所有的time都要使用指针类型的，否则不能插入数据库中，因为这个值可以为null
+	UpdateAt  *time.Time     `gorm:"column:update_time" json:"-"`
+	//DeletedAt gorm.DeletedAt `json:"-"`
+	IsDeleted bool           `gorm:"column:is_deleted" json:"-"`
 }

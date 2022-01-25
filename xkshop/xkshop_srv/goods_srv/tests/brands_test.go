@@ -14,7 +14,7 @@ var err error
 
 //测试BrandList接口
 
-func TestGetBrandList(t *testing.T) {
+func TestBrandList(t *testing.T) {
 	conn, err = grpc.Dial("127.0.0.1:50051", grpc.WithInsecure())
 	defer conn.Close()
 	if err != nil {

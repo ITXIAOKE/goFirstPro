@@ -15,7 +15,7 @@ var err2 error
 
 //测试BannerList接口
 
-func TestGetBannerList(t *testing.T) {
+func TestBannerList(t *testing.T) {
 	conn2, err2 = grpc.Dial("127.0.0.1:50051", grpc.WithInsecure())
 	defer conn2.Close()
 	if err2 != nil {

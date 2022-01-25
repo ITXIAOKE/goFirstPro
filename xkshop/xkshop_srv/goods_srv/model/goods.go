@@ -5,17 +5,18 @@ package model
 
 type Category struct { //类别
 	BaseModel
-	Name             string    `gorm:"type:varchar(20);not null"`
-	ParentCategoryID int32     //尽量使用int32  外键字段id
-	ParentCategory   *Category //级连  n层面包屑
-	Level            int32     `gorm:"type:int;not null;default:1"` //几级类目，默认是一级
-	IsTab            bool      `gorm:"default:false;not null"`      //是否显示在首页tab
+	Name             string      `gorm:"type:varchar(20);not null" json:"name"`
+	ParentCategoryID int32       `json:"parent"`                                                        //尽量使用int32  外键字段id
+	ParentCategory   *Category   `json:"-"`                                                             //级连  n层面包屑
+	SubCategory      []*Category `gorm:"foreignKey:ParentCategoryID;references:ID" json:"sub_category"` //重要
+	Level            int32       `gorm:"type:int;not null;default:1" json:"level"`                      //几级类目，默认是一级
+	IsTab            bool        `gorm:"default:false;not null" json:"is_tab"`                          //是否显示在首页tab
 }
 
 type Brands struct { //品牌
 	BaseModel
-	Name string `gorm:"type:varchar(20);not null"`
-	Logo string `gorm:"type:varchar(200);default:'';not null"`
+	Name string `gorm:"type:varchar(20);not null" json:"name"`
+	Logo string `gorm:"type:varchar(200);default:'';not null" json:"logo"`
 }
 
 type GoodsCategoryBrand struct { //商品品牌分类
