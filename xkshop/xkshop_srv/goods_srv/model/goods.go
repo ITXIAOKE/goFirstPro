@@ -54,9 +54,9 @@ type Goods struct {
 
 	Name     string `gorm:"type:varchar(50);not null"`   //商品名
 	GoodsSn  string `gorm:"type:varchar(50);not null"`   //商品唯一货号
-	ClickNum string `gorm:"type:int;default:0;not null"` //点击数
-	SoldNum  string `gorm:"type:int;default:0;not null"` //商品销售量
-	FavNum   string `gorm:"type:int;default:0;not null"` //商品收藏数
+	ClickNum int32 `gorm:"type:int;default:0;not null"` //点击数
+	SoldNum  int32 `gorm:"type:int;default:0;not null"` //商品销售量
+	FavNum   int32 `gorm:"type:int;default:0;not null"` //商品收藏数
 
 	MarketPrice float32 `g orm:"not null"` //市场价格
 	ShopPrice   float32 `gorm:"not null"`  //本店价格
