@@ -1,0 +1,36 @@
+2022-01-28T11:02:30.473+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-web.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:02:30.479+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-web.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:02:30.482+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-web.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:02:30.482+0800	[34mINFO[0m	get config from server error:[404] config data not exist
+ 
+2022-01-28T11:02:30.482+0800	[33mWARN[0m	[client.GetConfig] config not found, dataId: user-web.json, group: dev, namespaceId: 80317df8-5a77-4615-83b6-555905b2078c.
+2022-01-28T11:18:36.427+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-srv-dev.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:18:36.433+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-srv-dev.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:18:36.436+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-srv-dev.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:18:36.436+0800	[34mINFO[0m	get config from server error:[404] config data not exist
+ 
+2022-01-28T11:18:36.437+0800	[33mWARN[0m	[client.GetConfig] config not found, dataId: user-srv-dev.json, group: dev, namespaceId: 80317df8-5a77-4615-83b6-555905b2078c.
+2022-01-28T11:22:12.632+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-srv-dev.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:22:12.636+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-srv-dev.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:22:12.639+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"dataId":"user-srv-dev.json","group":"dev","tenant":"80317df8-5a77-4615-83b6-555905b2078c"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2022-01-28T11:22:12.639+0800	[34mINFO[0m	get config from server error:[404] config data not exist
+ 
+2022-01-28T11:22:12.639+0800	[33mWARN[0m	[client.GetConfig] config not found, dataId: user-srv-dev.json, group: dev, namespaceId: 80317df8-5a77-4615-83b6-555905b2078c.
