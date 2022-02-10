@@ -1,0 +1,14 @@
+.consul-intention-search-bar {
+  li button span {
+    @extend %pill-700;
+  }
+  .value-allow span {
+    @extend %pill-allow;
+  }
+  .value-deny span {
+    @extend %pill-deny;
+  }
+  .value- span {
+    @extend %pill-l7;
+  }
+}

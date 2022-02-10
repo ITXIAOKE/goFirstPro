@@ -1,0 +1,153 @@
+<Route
+  @name={{routeName}}
+as |route|>
+
+  <DataLoader @src={{
+      uri '/${partition}/${nspace}/${dc}/services'
+      (hash
+        partition=route.params.partition
+        nspace=route.params.nspace
+        dc=route.params.dc
+      )
+  }} as |api|>
+
+    <BlockSlot @name="error">
+      <AppError
+        @error={{api.error}}
+        @login={{route.model.app.login.open}}
+      />
+    </BlockSlot>
+
+    <BlockSlot @name="loaded">
+
+{{#let
+
+  (hash
+    value=(or sortBy "Status:asc")
+    change=(action (mut sortBy) value="target.selected")
+  )
+
+  (hash
+    status=(hash
+      value=(if status (split status ',') undefined)
+      change=(action (mut status) value="target.selectedItems")
+    )
+    kind=(hash
+      value=(if kind (split kind ',') undefined)
+      change=(action (mut kind) value="target.selectedItems")
+    )
+    source=(hash
+      value=(if source (split source ',') undefined)
+      change=(action (mut source) value="target.selectedItems")
+    )
+    searchproperty=(hash
+      value=(if (not-eq searchproperty undefined)
+        (split searchproperty ',')
+        searchProperties
+      )
+      change=(action (mut searchproperty) value="target.selectedItems")
+      default=searchProperties
+    )
+
+  )
+
+  (reject-by 'Kind' 'connect-proxy' api.data)
+
+  (or route.params.partition route.model.user.token.Partition 'default')
+  (or route.params.nspace route.model.user.token.Namespace 'default')
+
+as |sort filters items partition nspace|}}
+
+  <AppView>
+    <BlockSlot @name="header">
+        <h1>
+          <route.Title @title="Services" /> <em>{{format-number items.length}} total</em>
+        </h1>
+        <label for="toolbar-toggle"></label>
+    </BlockSlot>
+    <BlockSlot @name="toolbar">
+{{#if (gt items.length 0) }}
+  {{#let (collection items) as |items|}}
+        <Consul::Service::SearchBar
+          @sources={{get items 'ExternalSources'}}
+          @partitions={{get items 'Partitions'}}
+          @partition={{partition}}
+
+          @search={{search}}
+          @onsearch={{action (mut search) value="target.value"}}
+
+          @sort={{sort}}
+
+          @filter={{filters}}
+
+        />
+  {{/let}}
+{{/if}}
+    </BlockSlot>
+    <BlockSlot @name="content">
+      <DataCollection
+        @type="service"
+        @sort={{sort.value}}
+        @filters={{filters}}
+        @search={{search}}
+        @items={{items}}
+      as |collection|>
+        <collection.Collection>
+          <Consul::Service::List
+            @items={{collection.items}}
+            @partition={{partition}}
+          >
+          </Consul::Service::List>
+        </collection.Collection>
+        <collection.Empty>
+            <EmptyState
+              @login={{route.model.app.login.open}}
+            >
+              <BlockSlot @name="header">
+                <h2>
+                  {{#if (gt items.length 0)}}
+                    No services found
+                  {{else}}
+                    Welcome to Services
+                  {{/if}}
+                </h2>
+              </BlockSlot>
+              <BlockSlot @name="body">
+                <p>
+                  {{#if (gt items.length 0)}}
+                    No services where found matching that search, or you may not have access to view the services you are searching for.
+                  {{else}}
+                    There don't seem to be any registered services, or you may not have access to view services yet.
+                  {{/if}}
+                </p>
+              </BlockSlot>
+              <BlockSlot @name="actions">
+                <li class="docs-link">
+                  <Action
+                    @href="{{env 'CONSUL_DOCS_URL'}}/commands/services"
+                    @external={{true}}
+                  >
+                    Documentation on services
+                  </Action>
+                </li>
+                <li class="learn-link">
+                  <Action
+                    @href="{{env 'CONSUL_DOCS_LEARN_URL'}}/consul/getting-started/services"
+                    @external={{true}}
+                  >
+                    Read the guide
+                  </Action>
+                </li>
+              </BlockSlot>
+            </EmptyState>
+          </collection.Empty>
+        </DataCollection>
+    </BlockSlot>
+
+  </AppView>
+
+{{/let}}
+
+    </BlockSlot>
+  </DataLoader>
+</Route>

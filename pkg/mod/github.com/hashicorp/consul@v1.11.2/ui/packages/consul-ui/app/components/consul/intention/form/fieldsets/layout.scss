@@ -1,0 +1,21 @@
+.consul-intention-fieldsets {
+  [role='radiogroup'] {
+    overflow: visible !important;
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(270px, auto));
+  }
+  .radio-card {
+    @extend %radio-card-with-icon;
+  }
+  .radio-card header > * {
+    display: inline;
+  }
+  .permissions > button {
+    @extend %anchor, %p2;
+    float: right;
+  }
+}
+.consul-intention-permission-modal [role='dialog'] {
+  width: 100%;
+}

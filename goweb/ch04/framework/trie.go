@@ -104,7 +104,7 @@ func (n *node) matchNode(uri string) *node {
 func (tree *Tree) AddRouter(uri string, handler ControllerHandler) error {
 	n:=tree.root
 	if n.matchNode(uri)!=nil{
-		return errors.New("route exist:"+uri)
+		return errors.New("router exist:"+uri)
 	}
 	segments:=strings.Split(uri,"/")
 	for index,segment :=range segments{

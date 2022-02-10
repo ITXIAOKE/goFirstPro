@@ -1,0 +1,67 @@
+<TabularCollection
+  class="consul-kv-list"
+  ...attributes
+  @items={{@items}}
+as |item index|>
+  <BlockSlot @name="header">
+    <th>Name</th>
+  </BlockSlot>
+  <BlockSlot @name="row">
+    <td data-test-kv={{item.Key}} class={{if item.isFolder 'folder' 'file'}}>
+        <a href={{href-to (if item.isFolder 'dc.kv.folder' 'dc.kv.edit') item.Key}}>{{right-trim (left-trim item.Key @parent.Key) '/'}}</a>
+    </td>
+  </BlockSlot>
+  <BlockSlot @name="actions" as |index change checked|>
+    <PopoverMenu @expanded={{if (eq checked index) true false}} @onchange={{action change index}} @keyboardAccess={{false}}>
+      <BlockSlot @name="trigger">
+        More
+      </BlockSlot>
+      <BlockSlot @name="menu" as |confirm send keypressClick|>
+      {{#if (can 'write kv' item=item)}}
+          <li role="none">
+            <a data-test-edit role="menuitem" tabindex="-1" href={{href-to (if item.isFolder 'dc.kv.folder' 'dc.kv.edit') item.Key}}>{{if item.isFolder 'View' 'Edit'}}</a>
+          </li>
+          <li role="none" class="dangerous">
+            <label for={{confirm}} role="menuitem" tabindex="-1" onkeypress={{keypressClick}} data-test-delete>Delete</label>
+            <div role="menu">
+              <InformedAction
+                class="warning"
+              >
+                <:header>
+                  Confirm Delete
+                </:header>
+                <:body>
+                  <p>
+                    Are you sure you want to delete this KV entry?
+                  </p>
+                </:body>
+                <:actions as |Actions|>
+                  <Actions.Action class="dangerous">
+                    <Action
+                      class="type-delete"
+                      tabindex="-1"
+                      {{on 'click' (queue (action change) (action @delete item))}}
+                    >
+                      Delete
+                    </Action>
+                  </Actions.Action>
+                  <Actions.Action>
+                    <Action
+                      @for={{confirm}}
+                    >
+                      Cancel
+                    </Action>
+                  </Actions.Action>
+                </:actions>
+              </InformedAction>
+            </div>
+          </li>
+        {{else}}
+          <li role="none">
+            <a data-test-edit role="menuitem" tabindex="-1" href={{href-to (if item.isFolder 'dc.kv.folder' 'dc.kv.edit') item.Key}}>View</a>
+          </li>
+        {{/if}}
+      </BlockSlot>
+    </PopoverMenu>
+  </BlockSlot>
+</TabularCollection>

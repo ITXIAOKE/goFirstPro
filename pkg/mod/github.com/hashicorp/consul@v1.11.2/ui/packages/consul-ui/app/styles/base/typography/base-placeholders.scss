@@ -1,0 +1,78 @@
+%typo-inherit {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-style: inherit;
+}
+%typo-body {
+  font-size: var(--typo-size-600);
+  font-family: var(--typo-family-sans);
+  line-height: var(--typo-lead-700);
+}
+%typo-header {
+  line-height: var(--typo-lead-200);
+}
+%h000,
+%h100,
+%h200,
+%h300,
+%h400,
+%h500,
+%h600,
+%h400,
+%h500,
+%h600 {
+  @extend %typo-header;
+}
+%h100 {
+  font-weight: var(--typo-weight-bold);
+}
+%h200,
+%h300,
+%h400 {
+  font-weight: var(--typo-weight-semibold);
+}
+%h500,
+%h600 {
+  font-weight: var(--typo-weight-medium);
+}
+%h000 {
+  font-size: var(--typo-size-100);
+}
+%h100 {
+  font-size: var(--typo-size-200);
+}
+%h200 {
+  font-size: var(--typo-size-300);
+}
+%h300 {
+  font-size: var(--typo-size-500);
+}
+/*p1 strong, differing weights */
+%h400,
+%h500 {
+  font-size: var(--typo-size-600);
+}
+/*p2 strong */
+%h600 {
+  font-size: var(--typo-size-700);
+}
+%typo-p {
+  line-height: inherit;
+  font-size: inherit;
+}
+%p,
+%p1,
+%p2,
+%p3 {
+  @extend %typo-p;
+}
+%p1 {
+  font-size: var(--typo-size-600);
+}
+%p2 {
+  font-size: var(--typo-size-700);
+}
+%p3 {
+  font-size: var(--typo-size-800);
+}

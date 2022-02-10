@@ -1,0 +1,69 @@
+.topology-container {
+  display: grid;
+  height: 100%;
+  align-items: start;
+  grid-template-columns: 2fr 1fr 2fr 1fr 2fr;
+  grid-template-rows: 50px 1fr 50px;
+  grid-template-areas:
+    'down-cards down-lines . up-lines up-cards'
+    'down-cards down-lines metrics up-lines up-cards'
+    'down-cards down-lines . up-lines up-cards';
+}
+
+// Grid Layout
+#downstream-container {
+  grid-area: down-cards;
+}
+#downstream-lines {
+  grid-area: down-lines;
+}
+#upstream-lines {
+  grid-area: up-lines;
+}
+#upstream-column {
+  grid-area: up-cards;
+}
+
+// Columns/Containers & Lines
+#downstream-lines,
+#upstream-lines {
+  position: relative;
+}
+#downstream-lines {
+  margin-left: -20px;
+}
+#upstream-lines {
+  margin-right: -20px;
+}
+#downstream-container,
+#upstream-container {
+  padding: 12px;
+}
+#downstream-container div:first-child {
+  display: inline-flex;
+  span::before {
+    @extend %with-info-circle-outline-mask, %as-pseudo;
+    margin-left: 4px;
+  }
+}
+#upstream-column #upstream-container:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+// Metrics Container
+#metrics-container {
+  grid-area: metrics;
+
+  div:first-child {
+    padding: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .link {
+    padding: 18px;
+    a::before {
+      margin-right: 4px;
+    }
+  }
+}

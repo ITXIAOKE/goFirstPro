@@ -1,0 +1,181 @@
+<ChildSelector
+  @disabled={{disabled}}
+  @repo={{repo}}
+  @dc={{dc}}
+  @partition={{partition}}
+  @nspace={{nspace}}
+  @type="policy"
+  @placeholder="Search for policy"
+  @items={{items}}
+  ...attributes
+>
+  {{yield}}
+  <BlockSlot @name="label">
+    Apply an existing policy
+  </BlockSlot>
+  <BlockSlot @name="create">
+    {{#yield-slot name='trigger'}}
+      {{yield}}
+    {{else}}
+      <label
+        class="type-dialog"
+        data-test-policy-create
+        {{on "click" (optional this.modal.open)}}
+      >
+        <span>Create new policy</span>
+      </label>
+      {{!TODO: potentially call trigger something else}}
+      {{!the modal has to go here so that if you provide a slot to trigger it doesn't get rendered}}
+      <ModalDialog
+        data-test-policy-form
+        id="new-policy"
+        @onopen={{action "open"}}
+        @aria={{hash
+          label='New Policy'
+        }}
+      as |modal|>
+        <Ref @target={{this}} @name="modal" @value={{modal}} />
+        <BlockSlot @name="header">
+          <h2>New Policy</h2>
+        </BlockSlot>
+        <BlockSlot @name="body">
+          <PolicyForm
+            @form={{form}}
+            @nspace={{nspace}}
+            @partition={{partition}}
+            @dc={{dc}}
+            @allowServiceIdentity={{allowServiceIdentity}}
+          />
+        </BlockSlot>
+        <BlockSlot @name="actions" as |close|>
+          <button type="submit"
+            onclick={{perform this.save item items (queue (action close) (action 'reset'))}}
+            disabled={{if (or item.isSaving item.isPristine item.isInvalid) 'disabled'}}
+          >
+            {{#if item.isSaving }}
+              <div class="progress indeterminate"></div>
+            {{/if}}
+            <span>Create and apply</span>
+          </button>
+          <button type="reset" disabled={{if item.isSaving 'disabled'}} {{action (queue (action close) (action 'reset'))}}>Cancel</button>
+        </BlockSlot>
+      </ModalDialog>
+    {{/yield-slot}}
+  </BlockSlot>
+  <BlockSlot @name="option" as |option|>
+    {{option.Name}}
+  </BlockSlot>
+  <BlockSlot @name="set">
+    <TabularDetails
+        data-test-policies
+        @onchange={{action 'open'}}
+        @items={{sort-by 'CreateTime:desc' 'Name:asc' items}} as |item index|
+    >
+      <BlockSlot @name="header">
+        <th>Name</th>
+      </BlockSlot>
+      <BlockSlot @name="row">
+        <td class={{policy/typeof item}}>
+{{#if item.ID }}
+          <a href={{href-to 'dc.acls.policies.edit' item.ID}}>{{item.Name}}</a>
+{{else}}
+          <a name={{item.Name}}>{{item.Name}}</a>
+{{/if}}
+        </td>
+      </BlockSlot>
+      <BlockSlot @name="details">
+{{#if (eq item.template '')}}
+        <DataSource
+          @src={{uri '/${partition}/${nspace}/${dc}/policy/${id}'
+            (hash
+              partition=partition
+              nspace=nspace
+              dc=dc
+              id=item.ID
+            )
+          }}
+          @onchange={{action (mut loadedItem) value="data"}}
+          @loading="lazy"
+        />
+{{/if}}
+{{#if (eq item.template 'node-identity')}}
+          <dl>
+            <dt>Datacenter:</dt>
+            <dd>
+              {{item.Datacenter}}
+            </dd>
+          </dl>
+{{else}}
+          <dl>
+            <dt>Datacenters:</dt>
+            <dd>
+              {{join ', ' (policy/datacenters (or loadedItem item))}}
+            </dd>
+          </dl>
+{{/if}}
+          <label class="type-text">
+{{#if (eq item.template 'service-identity')}}
+            <CodeEditor
+              @syntax="hcl"
+              @readonly={{true}}
+            >
+              <:label>
+                Rules <a href="{{env 'CONSUL_DOCS_URL'}}/guides/acl.html#rule-specification" rel="help noopener noreferrer" target="_blank">(HCL Format)</a>
+              </:label>
+              <:content>
+                <Consul::ServiceIdentity::Template
+                  @nspace={{nspace}}
+                  @partition={{partition}}
+                  @name={{item.Name}}
+                />
+              </:content>
+            </CodeEditor>
+{{else if (eq item.template 'node-identity')}}
+            <CodeEditor
+              @syntax="hcl"
+              @readonly={{true}}
+            >
+              <:label>
+                Rules <a href="{{env 'CONSUL_DOCS_URL'}}/guides/acl.html#rule-specification" rel="help noopener noreferrer" target="_blank">(HCL Format)</a>
+              </:label>
+              <:content>
+                <Consul::NodeIdentity::Template
+                  @name={{item.Name}}
+                  @partition={{partition}}
+                />
+              </:content>
+            </CodeEditor>
+{{else}}
+            <CodeEditor
+              @syntax="hcl"
+              @readonly={{true}}
+              @value={{or loadedItem.Rules item.Rules}}
+            >
+              <:label>
+                Rules <a href="{{env 'CONSUL_DOCS_URL'}}/guides/acl.html#rule-specification" rel="help noopener noreferrer" target="_blank">(HCL Format)</a>
+              </:label>
+            </CodeEditor>
+{{/if}}
+          </label>
+{{#if (not disabled)}}
+          <div>
+            <ConfirmationDialog @message="Are you sure you want to remove this policy from this token?">
+              <BlockSlot @name="action" as |confirm|>
+                <button data-test-delete type="button" class="type-delete" {{action confirm 'remove' item items}}>Remove</button>
+              </BlockSlot>
+              <BlockSlot @name="dialog" as |execute cancel message|>
+                <p>
+                  {{message}}
+                </p>
+
+                <button type="button" class="type-delete" {{action execute}}>Confirm remove</button>
+                <button type="button" class="type-cancel" {{action cancel}}>Cancel</button>
+              </BlockSlot>
+            </ConfirmationDialog>
+          </div>
+{{/if}}
+      </BlockSlot>
+    </TabularDetails>
+
+  </BlockSlot>
+</ChildSelector>

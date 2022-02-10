@@ -1,0 +1,44 @@
+{{#if (not @noMetricsReason)}}
+  <DataSource
+    @src={{uri
+      '/${partition}/${nspace}/${dc}/metrics/${endpoint}/${service}/${protocol}'
+      (hash
+        nspace=@nspace
+        partition=@partition
+        dc=@dc
+        endpoint=@endpoint
+        service=@service
+        protocol=(or @protocol '')
+      )
+    }}
+    @onchange={{action 'statsUpdate'}}
+    @onerror={{action (mut error) value="error"}}
+  />
+{{/if}}
+
+<div ...attributes class="topology-metrics-stats" data-test-topology-metrics-stats>
+  {{#if hasLoaded }}
+    {{#each stats as |stat|}}
+    <dl {{tooltip
+      stat.desc
+      options=(hash
+        allowHTML=true
+      )
+    }}>
+      <dt>
+        {{stat.value}}
+      </dt>
+      <dd>
+        {{stat.label}}
+      </dd>
+    </dl>
+    {{else}}
+      <span>No Metrics Available</span>
+    {{/each}}
+  {{else}}
+    <TopologyMetrics::Status
+      @noMetricsReason={{@noMetricsReason}}
+      @error={{error}}
+    />
+  {{/if}}
+</div>

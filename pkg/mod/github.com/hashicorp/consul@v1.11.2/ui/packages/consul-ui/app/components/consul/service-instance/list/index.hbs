@@ -1,0 +1,77 @@
+<ListCollection
+  class="consul-service-instance-list"
+  ...attributes
+  @items={{@items}}
+as |item index|>
+  <BlockSlot @name="header">
+    {{#if (eq @routeName "dc.services.show")}}
+      <a data-test-service-name href={{href-to @routeName item.Service.Service}}>
+        {{item.Service.ID}}
+      </a>
+    {{else}}
+      <a data-test-service-name href={{href-to @routeName item.Service.Service item.Node.Node (or item.Service.ID item.Service.Service)}}>
+        {{item.Service.ID}}
+      </a>
+    {{/if}}
+  </BlockSlot>
+  <BlockSlot @name="details">
+  {{#if @node}}
+    <Consul::ExternalSource @item={{item.Service}} />
+    <Consul::InstanceChecks @type="service" @items={{item.Checks}} />
+  {{else}}
+    <Consul::ExternalSource @item={{item.Service}} />
+    <Consul::InstanceChecks @type="service" @items={{filter-by 'ServiceID' '' item.Checks}} />
+    <Consul::InstanceChecks @type="node" @items={{reject-by 'ServiceID' '' item.Checks}} />
+  {{/if}}
+{{#if item.ProxyInstance}}
+    <dl class="mesh">
+      <dt>
+        <Tooltip>
+          This service uses a proxy for the Consul service mesh
+        </Tooltip>
+      </dt>
+      <dd data-test-mesh>
+        in service mesh with proxy
+      </dd>
+    </dl>
+{{/if}}
+{{#if (not @node)}}
+    <dl class="node">
+      <dt>
+        <Tooltip>
+          Node
+        </Tooltip>
+      </dt>
+      <dd>
+        <a href={{href-to 'dc.nodes.show' item.Node.Node}}>{{item.Node.Node}}</a>
+      </dd>
+    </dl>
+{{/if}}
+{{#if item.Service.Port}}
+    <dl class="address" data-test-address>
+      <dt>
+        <Tooltip>
+          IP Address and Port
+        </Tooltip>
+      </dt>
+      <dd>
+        {{#if (not-eq item.Service.Address '')}}
+          {{item.Service.Address}}:{{item.Service.Port}}
+        {{else}}
+          {{item.Node.Address}}:{{item.Service.Port}}
+        {{/if}}
+      </dd>
+    </dl>
+{{else if item.Service.SocketPath}}
+    <dl class="socket" data-test-socket>
+      <dt {{tooltip}}>
+        Socket Path
+      </dt>
+      <dd>
+        {{item.Service.SocketPath}}
+      </dd>
+    </dl>
+{{/if}}
+    <TagList @item={{item.Service}} />
+  </BlockSlot>
+</ListCollection>

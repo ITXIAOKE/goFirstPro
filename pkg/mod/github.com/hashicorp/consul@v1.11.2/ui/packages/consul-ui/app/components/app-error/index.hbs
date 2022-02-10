@@ -1,0 +1,13 @@
+<AppView>
+  <BlockSlot @name="header">
+    <h1>
+      Error {{@error.status}}
+    </h1>
+  </BlockSlot>
+  <BlockSlot @name="content">
+    <ErrorState
+      @error={{@error}}
+      @login={{if (eq @error.status "403") @login}}
+    />
+  </BlockSlot>
+</AppView>

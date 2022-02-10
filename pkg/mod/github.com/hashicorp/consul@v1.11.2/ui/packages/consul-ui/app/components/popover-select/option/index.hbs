@@ -1,0 +1,16 @@
+{{#let @components.MenuItem as |MenuItem|}}
+  <MenuItem
+    class={{if this.selected 'is-active'}}
+    {{did-insert this.connect}}
+    {{did-insert (set this "selected" @selected)}}
+    {{did-update (set this "selected" @selected)}}
+    {{will-destroy this.disconnect}}
+    ...attributes
+    @onclick={{action @onclick this}}
+    @selected={{this.selected}}
+  >
+    <BlockSlot @name="label">
+      {{yield}}
+    </BlockSlot>
+  </MenuItem>
+{{/let}}

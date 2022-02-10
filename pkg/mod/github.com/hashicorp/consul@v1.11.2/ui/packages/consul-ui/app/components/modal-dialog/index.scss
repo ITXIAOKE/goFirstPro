@@ -1,0 +1,11 @@
+@import './skin';
+@import './layout';
+.modal-layer {
+  @extend %modal-layer;
+}
+.modal-dialog {
+  @extend %modal-dialog;
+}
+%modal-dialog [role='document'] {
+  @extend %modal-window;
+}

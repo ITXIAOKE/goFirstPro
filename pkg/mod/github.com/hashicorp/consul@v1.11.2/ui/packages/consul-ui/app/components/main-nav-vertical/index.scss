@@ -1,0 +1,63 @@
+@import './skin';
+@import './layout';
+/* things that should look like nav buttons */
+
+/* items are single things that look like button */
+/* but aren't clickable */
+%main-nav-vertical > ul > li[aria-label] {
+  @extend %main-nav-vertical-item;
+}
+/**/
+
+/* actual clickable button-y things plus states */
+%main-nav-vertical > ul > li > a {
+  @extend %main-nav-vertical-action;
+}
+%main-nav-vertical > ul > li.is-active > a {
+  @extend %main-nav-vertical-action-active;
+}
+
+%main-nav-vertical-action-active:hover:not(:active),
+%main-nav-vertical-action-active:focus:not(:active) {
+  @extend %main-nav-vertical-action-active-intent;
+}
+
+%main-nav-vertical-action:hover,
+%main-nav-vertical-action:focus {
+  @extend %main-nav-vertical-action-intent;
+}
+
+%main-nav-vertical > ul > li > label {
+  @extend %main-nav-vertical-action;
+}
+/**/
+
+%main-nav-vertical .popover-menu {
+  margin-top: 0.5rem;
+}
+%main-nav-vertical .popover-menu .menu-panel {
+  top: 37px !important;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+%main-nav-vertical .popover-menu > label > button {
+  border: var(--decor-border-100);
+  border-color: rgb(var(--tone-gray-500));
+  color: rgb(var(--tone-gray-999));
+  width: calc(100% - 20px);
+  z-index: 100;
+  text-align: left;
+  padding: 10px;
+  border-radius: var(--decor-radius-100);
+}
+%main-nav-vertical .popover-menu > label > button::after {
+  float: right;
+}
+%main-nav-vertical .popover-menu .menu-panel {
+  top: 28px;
+  z-index: 100;
+}
+/* menu-panels in the main navigation are treated slightly differently */
+%main-nav-vertical label + div {
+  @extend %main-nav-vertical-menu-panel;
+}

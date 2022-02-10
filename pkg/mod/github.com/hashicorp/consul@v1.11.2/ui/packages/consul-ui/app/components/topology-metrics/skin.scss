@@ -1,0 +1,87 @@
+.topology-container {
+  color: rgb(var(--tone-gray-700));
+}
+
+// Columns/Containers & Lines
+#downstream-container,
+#metrics-container,
+#upstream-container {
+  border-radius: var(--decor-radius-100);
+  border: 1px solid;
+  /* TODO: If this color is combined with the above */
+  /* border property then the compressor removes the color */
+  border-color: rgb(var(--tone-gray-200));
+}
+#downstream-container,
+#upstream-container {
+  background-color: rgb(var(--tone-gray-100));
+}
+#downstream-container div:first-child {
+  display: inline-flex;
+  span::before {
+    @extend %with-info-circle-outline-mask, %as-pseudo;
+    background-color: rgb(var(--tone-gray-500));
+  }
+}
+
+// Metrics Container
+#metrics-container {
+  div:first-child {
+    background-color: rgb(var(--tone-gray-000));
+  }
+  .link {
+    background-color: rgb(var(--tone-gray-100));
+    a {
+      color: rgb(var(--tone-gray-700));
+    }
+    a::before {
+      background-color: rgb(var(--tone-gray-500));
+    }
+    a:hover {
+      color: rgb(var(--color-action));
+    }
+    .metrics-link::before {
+      @extend %with-exit-mask, %as-pseudo;
+    }
+    .config-link::before {
+      @extend %with-docs-mask, %as-pseudo;
+    }
+  }
+}
+
+// SVG Line styling
+#downstream-lines svg,
+#upstream-lines svg {
+  path {
+    fill: var(--transparent);
+  }
+  circle {
+    fill: rgb(var(--tone-gray-000));
+  }
+  .allow-arrow {
+    fill: rgb(var(--tone-gray-300));
+    stroke-linejoin: round;
+  }
+  path,
+  .allow-dot,
+  .allow-arrow {
+    stroke: rgb(var(--tone-gray-300));
+    stroke-width: 2;
+  }
+  path[data-permission='not-defined'],
+  path[data-permission='empty'] {
+    stroke-dasharray: 4;
+  }
+  path[data-permission='deny'] {
+    stroke: rgb(var(--tone-red-500));
+  }
+  .deny-dot {
+    stroke: rgb(var(--tone-red-500));
+    stroke-width: 2;
+  }
+  .deny-arrow {
+    fill: rgb(var(--tone-red-500));
+    stroke: rgb(var(--tone-red-500));
+    stroke-linejoin: round;
+  }
+}

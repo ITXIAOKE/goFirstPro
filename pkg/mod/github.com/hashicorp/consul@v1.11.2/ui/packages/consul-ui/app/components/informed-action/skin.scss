@@ -1,0 +1,86 @@
+%informed-action {
+  & {
+    border-radius: var(--decor-radius-200);
+    border: var(--decor-border-100);
+    border-color: rgb(var(--tone-gray-300));
+    background-color: rgb(var(--tone-gray-000));
+  }
+  > div {
+    border-top-left-radius: var(--decor-radius-200);
+    border-top-right-radius: var(--decor-radius-200);
+    cursor: default;
+  }
+  header {
+    @extend %h400;
+  }
+  header > * {
+    @extend %typo-inherit;
+  }
+  p {
+    @extend %p2;
+    color: rgb(var(--tone-gray-999));
+  }
+  > ul {
+    list-style: none;
+  }
+  > ul > li > *:hover,
+  > ul > li > *:focus {
+    background-color: rgb(var(--tone-gray-100));
+  }
+  /* variants */
+  &.info {
+    header {
+      color: rgb(var(--tone-blue-700));
+    }
+    header::before {
+      @extend %with-info-circle-fill-mask, %as-pseudo;
+      background-color: rgb(var(--tone-blue-500));
+      margin-right: 5px;
+    }
+    > div {
+      background-color: rgb(var(--tone-blue-010));
+    }
+  }
+  &.dangerous {
+    header {
+      color: rgb(var(--tone-red-700));
+    }
+    header::before {
+      @extend %with-alert-triangle-mask, %as-pseudo;
+      background-color: rgb(var(--tone-red-500));
+    }
+    > div {
+      background-color: rgb(var(--tone-red-010));
+    }
+  }
+  &.warning {
+    header {
+      color: rgb(var(--tone-orange-700));
+    }
+    header::before {
+      @extend %with-alert-triangle-mask, %as-pseudo;
+      background-color: rgb(var(--tone-yellow-500));
+      margin-right: 5px;
+    }
+    > div {
+      background-color: rgb(var(--tone-yellow-050));
+    }
+  }
+  /* brands */
+  &.kubernetes {
+    header::before {
+      @extend %with-logo-kubernetes-color-icon, %without-mask, %as-pseudo;
+    }
+  }
+  /**/
+  > ul > .action > * {
+    color: rgb(var(--tone-blue-500));
+  }
+  > ul > .dangerous > * {
+    @extend %frame-red-300;
+  }
+  > ul > .dangerous > *:hover,
+  > ul > .dangerous > *:focus {
+    @extend %frame-red-700;
+  }
+}

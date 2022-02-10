@@ -1,0 +1,39 @@
+<div
+  class="app-view"
+  ...attributes
+>
+  {{yield}}
+  <header>
+      <div>
+          <div>
+              <nav aria-label="Breadcrumb" data-test-breadcrumbs>
+                  <YieldSlot @name="breadcrumbs">
+                    {{document-attrs class="with-breadcrumbs"}}
+                    {{yield}}
+                  </YieldSlot>
+              </nav>
+              <div class="title">
+                <YieldSlot @name="header">
+                    {{yield}}
+                </YieldSlot>
+                <div class="actions">
+                    <YieldSlot @name="actions">
+                      <PortalTarget @name="app-view-actions" />
+                      {{yield}}
+                    </YieldSlot>
+                </div>
+              </div>
+              <YieldSlot @name="nav">
+                {{yield}}
+              </YieldSlot>
+          </div>
+      </div>
+      <YieldSlot @name="toolbar">
+        <input type="checkbox" id="toolbar-toggle" />
+        {{yield}}
+      </YieldSlot>
+  </header>
+  <div>
+    <YieldSlot @name="content">{{yield}}</YieldSlot>
+  </div>
+</div>

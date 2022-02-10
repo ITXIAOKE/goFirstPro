@@ -1,0 +1,17 @@
+<Notice
+  @type="info"
+as |notice|>
+  <notice.Body>
+    <p>
+      {{t "components.consul.intention.notice.permissions.body"}}
+    </p>
+  </notice.Body>
+  <notice.Footer>
+    <p>
+      <a href="{{env 'CONSUL_DOCS_URL'}}/connect/intentions" target="_blank" rel="noopener noreferrer">
+        {{t "components.consul.intention.notice.permissions.footer"}}
+      </a>
+    </p>
+  </notice.Footer>
+</Notice>
+

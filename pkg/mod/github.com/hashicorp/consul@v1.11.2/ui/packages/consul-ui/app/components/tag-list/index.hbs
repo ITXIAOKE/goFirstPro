@@ -1,0 +1,29 @@
+{{#let (union (or @item.Tags (array)) (or @tags (array))) as |tags|}}
+  {{#if (gt tags.length 0)}}
+    {{#if (has-block)}}
+      {{yield
+        (component 'tag-list' item=@item)
+      }}
+    {{else}}
+<dl
+  class="tag-list"
+  ...attributes
+>
+  <dt
+    {{tooltip}}
+  >
+    {{t "components.tag-list.title"
+      default=(array
+        "common.consul.tags"
+      )
+    }}
+  </dt>
+  <dd data-test-tags>
+    {{#each tags as |item|}}
+      <span>{{item}}</span>
+    {{/each}}
+  </dd>
+</dl>
+    {{/if}}
+  {{/if}}
+{{/let}}
