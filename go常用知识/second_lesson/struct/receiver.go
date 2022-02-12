@@ -15,13 +15,13 @@ func main() {
 
 	// 因为 up 指针，所以内部的数据是可以被改变的
 	up := &User{
-		Name: "Jerry",
+		Name: "xiaoke",
 		Age: 12,
 	}
 
 	// 因为 ChangeName 的接收器是结构体
 	// 所以 up 的数据还是不会变
-	up.ChangeName("Jerry Changed!")
+	up.ChangeName("xiaoke Changed!")
 	up.ChangeAge(120)
 
 	fmt.Printf("%v \n", up)
@@ -41,3 +41,10 @@ func (u User) ChangeName(newName string)  {
 func (u *User) ChangeAge(newAge int) {
 	u.Age = newAge
 }
+
+/**
+go新人3个坑
+1：字符串长度计算，使用utf8.RuneCountInString
+2: 切片
+3: 结构体采用结构体或者指针绑定方法
+ */

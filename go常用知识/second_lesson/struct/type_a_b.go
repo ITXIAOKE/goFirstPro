@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+//type Header map[string][]string
+
+//type HandleFunc func(w http.ResponseWriter,r *http.Request)
 
 func main() {
 	fake := FakeFish{}
