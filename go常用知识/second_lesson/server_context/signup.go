@@ -3,7 +3,7 @@ package server_context
 import (
 	"encoding/json"
 	"fmt"
-	"geektime/toy-web/pkg/v2"
+	//"geektime/toy-web/pkg/v2"
 	"io"
 	"net/http"
 )
@@ -28,22 +28,22 @@ func SignUpWithoutContext(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%d", err)
 }
 
-func SignUpWithoutWrite(w http.ResponseWriter, r *http.Request) {
-	c := webv2.NewContext(w, r)
-	req := &signUpReq{}
-	err := c.ReadJson(req)
-	if err != nil {
-		resp := &commonResponse{
-			BizCode: 4, // 假如说我们这个代表输入参数错误
-			Msg: fmt.Sprintf("invalid request: %v", err),
-		}
-		respBytes, _ := json.Marshal(resp)
-		fmt.Fprint(w, string(respBytes))
-		return
-	}
-	// 这里又得来一遍 resp 转json
-	fmt.Fprintf(w, "invalid request: %v", err)
-}
+//func SignUpWithoutWrite(w http.ResponseWriter, r *http.Request) {
+//	c := webv2.NewContext(w, r)
+//	req := &signUpReq{}
+//	err := c.ReadJson(req)
+//	if err != nil {
+//		resp := &commonResponse{
+//			BizCode: 4, // 假如说我们这个代表输入参数错误
+//			Msg: fmt.Sprintf("invalid request: %v", err),
+//		}
+//		respBytes, _ := json.Marshal(resp)
+//		fmt.Fprint(w, string(respBytes))
+//		return
+//	}
+//	// 这里又得来一遍 resp 转json
+//	fmt.Fprintf(w, "invalid request: %v", err)
+//}
 
 type signUpReq struct {
 	Email string `json:"email"`
