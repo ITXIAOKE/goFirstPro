@@ -45,6 +45,16 @@ func (u *User) ChangeAge(newAge int) {
 /**
 go新人3个坑
 1：字符串长度计算，使用utf8.RuneCountInString
-2: 切片
-3: 结构体采用结构体或者指针绑定方法
+2: 切片   append后，变成一个新的slice  和数组公用底层数据结构
+3: 结构体采用结构体或者指针绑定方法，遇事不决用指针
+ */
+
+/**
+以下这种用结构体
+
+type Handle func()
+
+func (h Handle)Hello(){
+
+}
  */
