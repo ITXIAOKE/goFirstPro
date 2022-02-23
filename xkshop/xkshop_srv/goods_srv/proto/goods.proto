@@ -1,7 +1,7 @@
 syntax = "proto3";
 import "google/protobuf/empty.proto";
 option go_package = "./;proto";//新版本protoc要求这里必须加./才能执行成功
-// 执行脚本protoc -I . user.proto --go_out=plugins=grpc:.
+// 执行脚本protoc -I . goods.proto --go_out=plugins=grpc:.
 
 service Goods{
     //商品接口

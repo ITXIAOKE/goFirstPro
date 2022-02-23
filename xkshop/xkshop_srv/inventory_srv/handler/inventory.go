@@ -46,6 +46,8 @@ func (*InventoryServer) InvDetail(ctx context.Context, req *proto.GoodsInvInfo) 
 	}, nil
 }
 
+//扣减库存
+
 func (*InventoryServer) Sell(ctx context.Context, req *proto.SellInfo) (*emptypb.Empty, error) {
 	//扣减库存， 本地事务 [1:10,  2:5, 3: 20]
 	//数据库基本的一个应用场景：数据库事务
@@ -73,12 +75,14 @@ func (*InventoryServer) Sell(ctx context.Context, req *proto.SellInfo) (*emptypb
 		})
 
 		var inv model.Inventory
+		//mysql悲观锁
 		//if result := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where(&model.Inventory{Goods:goodInfo.GoodsId}).First(&inv); result.RowsAffected == 0 {
 		//	tx.Rollback() //回滚之前的操作
 		//	return nil, status.Errorf(codes.InvalidArgument, "没有库存信息")
 		//}
 
 		//for {
+		//redis的分布式锁
 		mutex := rs.NewMutex(fmt.Sprintf("goods_%d", goodInfo.GoodsId))
 		if err := mutex.Lock(); err != nil {
 			return nil, status.Errorf(codes.Internal, "获取redis分布式锁异常")
@@ -100,9 +104,10 @@ func (*InventoryServer) Sell(ctx context.Context, req *proto.SellInfo) (*emptypb
 		if ok, err := mutex.Unlock(); !ok || err != nil {
 			return nil, status.Errorf(codes.Internal, "释放redis分布式锁异常")
 		}
+		//mysql乐观锁
 			//update inventory set stocks = stocks-1, version=version+1 where goods=goods and version=version
-			//这种写法有瑕疵，为什么？
-			//零值 对于int类型来说 默认值是0 这种会被gorm给忽略掉
+			//这种写法有瑕疵，为什么？剩下最后一个商品，并发就出问题了
+			//零值 对于int类型来说 默认值是0 这种会被gorm给忽略掉，采用select语句指定列，进行数据更新
 			//if result := tx.Model(&model.Inventory{}).Select("Stocks", "Version").Where("goods = ? and version= ?", goodInfo.GoodsId, inv.Version).Updates(model.Inventory{Stocks: inv.Stocks, Version: inv.Version+1}); result.RowsAffected == 0 {
 			//	zap.S().Info("库存扣减失败")
 			//}else{
