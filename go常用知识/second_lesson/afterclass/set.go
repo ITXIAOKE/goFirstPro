@@ -1,4 +1,4 @@
-package afterclass
+package main
 
 type Set interface {
 	Put(key string)
