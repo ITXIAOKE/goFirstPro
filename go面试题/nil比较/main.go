@@ -5,12 +5,12 @@ import "fmt"
 /**
 runtime2源码接口如下：
 
-type iface struct {
+type iface behavioral {
 	tab  *itab
 	data unsafe.Pointer
 }
 
-type eface struct {
+type eface behavioral {
 	_type *_type
 	data  unsafe.Pointer
 }

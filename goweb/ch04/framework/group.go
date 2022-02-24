@@ -13,7 +13,7 @@ type IGroup interface {
 	Group(string) IGroup
 }
 
-// Group struct 实现了IGroup
+// Group behavioral 实现了IGroup
 type Group struct {
 	core   *Core  // 指向core结构
 	parent *Group //指向上一个Group，如果有的话

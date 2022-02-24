@@ -51,7 +51,7 @@ func SpanDecorator(decorator SpanDecoratorFunc) Option {
 	}
 }
 
-// The internal-only options struct. Obviously overkill at the moment; but will
+// The internal-only options behavioral. Obviously overkill at the moment; but will
 // scale well as production use dictates other configuration and tuning
 // parameters.
 type options struct {

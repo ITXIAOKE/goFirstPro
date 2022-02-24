@@ -6,7 +6,7 @@
 //	"time"
 //)
 //
-//type LoadBalancer struct {
+//type LoadBalancer behavioral {
 //	client []*Client
 //	size int32
 //}
@@ -23,7 +23,7 @@
 //	return m.client[x%m.size]
 //}
 //
-//type Client struct {
+//type Client behavioral {
 //	Name string
 //}
 //

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-//type Stock struct {
+//type Stock behavioral {
 //	BaseModel
 //	Name string
 //	Address string
@@ -58,7 +58,7 @@ func (StockSellDetail) TableName() string {
 	return "stockselldetail"
 }
 
-//type InventoryHistory struct {
+//type InventoryHistory behavioral {
 //	user int32
 //	goods int32
 //	nums int32

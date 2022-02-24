@@ -11,7 +11,7 @@ import (
 go doc net/http | grep "^func"
 go doc context | grep "^func"
 
-go doc net/http | grep "^type" | grep struct
+go doc net/http | grep "^type" | grep behavioral
 
 
 */

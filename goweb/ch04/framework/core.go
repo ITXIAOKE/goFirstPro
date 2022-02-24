@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Core represent core struct
+// Core represent core behavioral
 type Core struct {
 	router map[string]*Tree // all routers
 }
