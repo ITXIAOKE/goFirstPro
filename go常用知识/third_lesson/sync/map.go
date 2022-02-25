@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	m := sync.Map{}
+	m := sync.Map{} //并发安全map
 	m.Store("cat", "Tom")
 	m.Store("mouse", "Jerry")
 

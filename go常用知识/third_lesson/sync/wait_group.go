@@ -7,7 +7,7 @@ import (
 
 func main() {
 	res := 0
-	wg := sync.WaitGroup{}
+	wg := sync.WaitGroup{} //多个goroutine之间进行同步
 	wg.Add(10)
 	for i := 0; i < 10; i++ {
 		go func(val int) {

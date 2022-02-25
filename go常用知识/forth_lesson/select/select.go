@@ -8,7 +8,7 @@ import (
 func main() {
 	// 这个不能在 main 函数运行，是因为运行起来，
 	// 所有的goroutine都被我们搞sleep了，直接就崩了
-	//Select()
+	Select()
 }
 
 func Select() {
@@ -25,12 +25,15 @@ func Select() {
 		ch2 <- "msg from channel2"
 	}()
 
-	for {
+	//select同时的情况下，顺序是没有保证的
+	for i := 0; i < 2; i++ {
 		select {
-		case msg := <- ch1:
+		case msg := <-ch1:
 			fmt.Println(msg)
-		case msg := <- ch2:
+		case msg := <-ch2:
 			fmt.Println(msg)
+		default:
+			time.Sleep(time.Second)
 		}
 	}
 }
