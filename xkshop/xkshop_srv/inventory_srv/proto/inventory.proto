@@ -9,6 +9,7 @@ service Inventory {
   rpc InvDetail(GoodsInvInfo) returns (GoodsInvInfo); // 获取库存信息
   rpc Sell(SellInfo) returns (google.protobuf.Empty); //库存扣减
   rpc Reback(SellInfo) returns(google.protobuf.Empty); //库存归还
+  //  rpc SayHello (HelloRequest) returns (HelloReply) {}//这种方式也可以
 }
 
 message GoodsInvInfo {
