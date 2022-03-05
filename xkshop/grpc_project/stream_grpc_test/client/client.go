@@ -8,7 +8,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"xkshop/v1/stream_grpc_test/proto"
+	"xkshop/v1/grpc_project/stream_grpc_test/proto"
 )
 
 func main() {

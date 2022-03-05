@@ -6,7 +6,7 @@ import (
 	"net"
 	"sync"
 	"time"
-	"xkshop/v1/stream_grpc_test/proto"
+	"xkshop/v1/grpc_project/stream_grpc_test/proto"
 )
 
 const PORT = ":50052"
