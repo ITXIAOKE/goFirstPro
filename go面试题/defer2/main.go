@@ -13,19 +13,19 @@ func func2() (sum int) {
 	sumB := 200
 	sum = sumA + sumB
 	defer func() {
-		fmt.Println("first:", sum)//闭包，这个sum值是函数执行完后，有这个返回值sum,最后的值
+		fmt.Println("first:", sum) //闭包，这个sum值是函数执行完后，有这个返回值sum,最后的值 310
 	}()
-	defer fmt.Println("second:", sum)//函数里面执行完后，显示的值
+	defer fmt.Println("second:", sum) //函数里面执行完后，显示的值
 	return sum + 10
 }
 
-func func3() int{
+func func3() int {
 	sumA := 100
 	sumB := 200
 	sum := sumA + sumB
 	defer func() {
-		fmt.Println("first:", sum)//闭包，这个sum值是函数执行完后，没有这个返回值sum，
+		fmt.Println("first:", sum) //闭包，这个sum值是函数执行完后，没有这个返回值sum，结果是300
 	}()
-	defer fmt.Println("second:", sum)//函数里面执行完后，显示的值
+	defer fmt.Println("second:", sum) //函数里面执行完后，显示的值
 	return sum + 10
 }

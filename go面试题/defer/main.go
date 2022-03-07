@@ -15,7 +15,10 @@ func main() {
 	defer fmt.Println("third:", m)
 
 	funcVal := func1() //闭包
-	funcVal()
+	funcVal()          //执行
+
+	//func1()//结果是只有before return ,没有接收
+	m*=3
 
 }
 
@@ -31,7 +34,7 @@ func func1() func() {
 before return
 in the return
 third: 2000
-second: 2000
+second: 6000
 first: 10
 
 

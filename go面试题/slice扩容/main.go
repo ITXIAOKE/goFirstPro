@@ -14,7 +14,7 @@ import "fmt"
 1025*8=8200  【查表sizeclasses.go文件   9472/8=1184】
 */
 func main() {
-	var arr1 []int64
+	var arr1 []int64 //每个元素占据的大小都是8byte
 	var arr2 []int64
 	for i := 0; i < 1025; i++ {
 		arr1 = append(arr1, int64(i))

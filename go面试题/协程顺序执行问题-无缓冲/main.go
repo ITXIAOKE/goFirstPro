@@ -14,13 +14,16 @@ import (
 */
 
 func main() {
-	catChan := make(chan bool)
+	wg := sync.WaitGroup{}
+
+	catChan := make(chan bool) //这里放缓冲一样
 	dogChan := make(chan bool)
 	fishChan := make(chan bool)
-	wg := sync.WaitGroup{}
+
 	cat(fishChan, catChan, &wg)
 	dog(catChan, dogChan, &wg)
 	fish(dogChan, fishChan, &wg)
+
 	wg.Wait()
 }
 
@@ -50,7 +53,6 @@ func dog(catChan chan bool, dogChan chan bool, w *sync.WaitGroup) {
 		}
 		w.Done()
 	}()
-	//w.Done()//不能放这里
 }
 
 func cat(fishChan chan bool, catChan chan bool, w *sync.WaitGroup) {
@@ -64,5 +66,4 @@ func cat(fishChan chan bool, catChan chan bool, w *sync.WaitGroup) {
 		}
 		w.Done()
 	}()
-	//w.Done()//不能放这里
 }

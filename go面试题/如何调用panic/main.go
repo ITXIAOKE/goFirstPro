@@ -19,9 +19,9 @@ func main() {
 		t := time.NewTicker(time.Second)
 		for {
 			select {
-			case <-t.C:
+			case <-t.C: //每秒钟输出
 				go func() {
-					defer func() {
+					defer func() { //defer捕获panic
 						if err := recover(); err != nil {
 							fmt.Println(err)
 						}
@@ -32,5 +32,5 @@ func main() {
 		}
 
 	}()
-	select {} //不能去掉，阻塞
+	select {} //不能去掉，让主线程阻塞，等待goroutine执行完成
 }

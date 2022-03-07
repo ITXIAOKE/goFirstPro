@@ -36,7 +36,7 @@
 //	defer func() {
 //		val += 1
 //	}()
-//	//return  //结果11
+//	//return val //结果11  或者return
 //	return 100 //结果101
 //}
 //
@@ -56,8 +56,9 @@ import "fmt"
 //闭包测试,没有变量
 func mysum() int {
 	val := 10
-	defer func() {
+	defer func() { //因为没有返回变量，defer是在当前函数mysum执行完毕后，才执行的，结果只在这个函数中生效
 		val += 1
+		fmt.Println(val)
 	}()
 	return val //结果10
 	//return 100 //结果100
@@ -69,5 +70,10 @@ func printFunc() {
 
 func main() {
 	printFunc()
+	//mysum() 直接调用闭包函数就打印闭包里面的值11
 
 }
+
+//结果
+//11  先打印闭包里面的val值11
+//10  最后再打印printFunc函数里面的值10
