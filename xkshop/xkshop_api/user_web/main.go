@@ -21,7 +21,7 @@ import (
 func main() {
 	//port := 8021
 	//zap.L() //全局的logger
-	//zap.S() //全局的global
+	//zap.S() //全局的SugaredLogger
 	//zap.ReplaceGlobals(logger) //让日志打印输出
 
 	//1,初始化log

@@ -13,11 +13,11 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"xkshop/v1/xkshop_api/user_web/utils"
 	"xkshop/v1/xkshop_srv/user_srv/global"
 	handler2 "xkshop/v1/xkshop_srv/user_srv/handler"
 	"xkshop/v1/xkshop_srv/user_srv/initialize"
 	proto2 "xkshop/v1/xkshop_srv/user_srv/proto"
+	"xkshop/v1/xkshop_srv/user_srv/utils"
 )
 
 func main() {
