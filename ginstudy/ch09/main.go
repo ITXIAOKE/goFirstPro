@@ -4,74 +4,10 @@ import (
 	"fmt"
 
 	"net/http"
-	"reflect"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/go-playground/locales/en"
-	"github.com/go-playground/locales/zh"
-	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator/v10"
-
-	en_translations "github.com/go-playground/validator/v10/translations/en"
-	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 )
-
-type LoginForm struct {
-	User     string `json:"user"  binding:"required,min=3,max=10"`
-	Password string `json:"password" binding:"required"`
-}
-
-type SignUpForm struct {
-	Age        uint8  `json:"age" binding:"required,gte=1,lte=130"`
-	Name       string `json:"name" binding:"required,min=3"`
-	Email      string `json:"email" binding:"required,email"`
-	Password   string `json:"password" binding:"required"`
-	RePassword string `json:"re_password" binding:"required,eqfield=Password"` //跨字段
-}
-
-var trans ut.Translator
-
-func InitTrans(locale string) (err error) {
-	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		//注册一个获取json的tag的自定义方法
-		v.RegisterTagNameFunc(func(field reflect.StructField) string {
-			name := strings.SplitN(field.Tag.Get("json"), ",", 2)[0]
-			if name == "-" {
-				return ""
-			}
-			return name
-		})
-
-		zhT := zh.New() //中文翻译器
-		enT := en.New() //英文翻译器
-		uni := ut.New(enT, zhT, enT)
-		trans, ok = uni.GetTranslator(locale)
-		if !ok {
-			return fmt.Errorf("uni.GetTranslator(%s)", locale)
-		}
-		switch locale {
-		case "en":
-			en_translations.RegisterDefaultTranslations(v, trans)
-		case "zh":
-			zh_translations.RegisterDefaultTranslations(v, trans)
-		default:
-			en_translations.RegisterDefaultTranslations(v, trans)
-		}
-		return
-	}
-	return
-}
-
-func removeTopStruct(fields map[string]string) map[string]string {
-	rsp := map[string]string{}
-	for field, err := range fields {
-		rsp[field[strings.Index(field, ".")+1:]] = err
-	}
-	return rsp
-}
 
 func MyLogger() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -89,12 +25,35 @@ func MyLogger() gin.HandlerFunc {
 	}
 }
 
+func TokenRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var token string
+		for k, v := range c.Request.Header {
+			if k == "X-Token" {
+				token = v[0]
+			} else {
+				fmt.Println(k, v)
+			}
+		}
+
+		if token != "bobby" {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"msg": "未登录",
+			})
+			//挑战 为什么连return都阻止不了后续逻辑的执行,只能是c.abort（）才能执行阻止的功能
+			c.Abort()
+		}
+		c.Next()
+	}
+}
+
 func main() {
 	////中间件功能相关
 
 	r := gin.Default()
 
 	r.Use(MyLogger())
+	r.Use(TokenRequired())
 
 	//r.Static()//加载静态文件
 
@@ -102,10 +61,10 @@ func main() {
 	r.Run(":8082")
 
 	//r := gin.New()
-	//r.Use(gin.Logger(), gin.Recovery())
+	//r.Use(gin.Logger(), gin.Recovery())//全局所有
 	//
 	//authrized := r.Group("/goods")
-	//authrized.Use(AuthRequired)
+	//authrized.Use(AuthRequired)//针对/goods这个url生效
 
 }
 

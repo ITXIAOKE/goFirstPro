@@ -5,22 +5,30 @@ import (
 	"net/http"
 )
 
-type Person struct {
-	//ID   string `uri:"id" binding:"required,uuid"`//这个是uuid的id
-	ID   int    `uri:"id" binding:"required"`
-	Name string `uri:"name" binding:"required"`
-}
-
 func main() {
 	//获取get和post的表单信息
 	r := gin.Default()
 	v1 := r.Group("/v1") //要符合restful设计风格
 	{
 		v1.GET("/welcome", welcome)
-		v1.POST("/form_post", form_post)
+		v1.POST("/form_post", form_post) //数据放body中，最终数据在body上
+		v1.POST("/post", getPost)        //混合，数据放param中，最终数据在url上
 	}
 	r.Run(":8089")
 
+}
+
+func getPost(c *gin.Context) {
+	id := c.Query("id")
+	page := c.DefaultQuery("page", "0")
+	name := c.PostForm("name")
+	message := c.DefaultPostForm("message", "信息")
+	c.JSON(http.StatusOK, gin.H{
+		"id":      id,
+		"page":    page,
+		"name":    name,
+		"message": message,
+	})
 }
 
 func form_post(context *gin.Context) {

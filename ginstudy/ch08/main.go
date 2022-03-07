@@ -33,8 +33,9 @@ type SignUpForm struct {
 var trans ut.Translator
 
 func InitTrans(locale string) (err error) {
+	//修改gin框架中的validator引擎属性，实现定制
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		//注册一个获取json的tag的自定义方法
+		//注册一个获取json的tag的自定义方法，拿到返回错误的tag字段信息，而不是原始的field字段
 		v.RegisterTagNameFunc(func(field reflect.StructField) string {
 			name := strings.SplitN(field.Tag.Get("json"), ",", 2)[0]
 			if name == "-" {
@@ -45,6 +46,7 @@ func InitTrans(locale string) (err error) {
 
 		zhT := zh.New() //中文翻译器
 		enT := en.New() //英文翻译器
+		//第一个参数是备用的语言环境，后面的参数是应该支持的语言环境
 		uni := ut.New(enT, zhT, enT)
 		trans, ok = uni.GetTranslator(locale)
 		if !ok {
@@ -63,6 +65,7 @@ func InitTrans(locale string) (err error) {
 	return
 }
 
+//表单中文翻译的json格式化，去除错误信息中的LoginForm，只要字段user或者paw等信息，结果是："user":"user字段不能超过10个字符"
 func removeTopStruct(fields map[string]string) map[string]string {
 	rsp := map[string]string{}
 	for field, err := range fields {
@@ -99,7 +102,7 @@ func signup(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"msg": "登陆成功",
+		"msg": "注册成功",
 	})
 }
 
@@ -114,7 +117,7 @@ func form_post(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, gin.H{
 			//"error": errs.Translate(trans),
-			"error": removeTopStruct(errs.Translate(trans)),
+			"error": removeTopStruct(errs.Translate(trans)), //表单中文翻译的json格式化，去除错误信息中的LoginForm，只要字段user或者paw等信息，结果是："user":"user字段不能超过10个字符"
 		})
 		return
 	}
