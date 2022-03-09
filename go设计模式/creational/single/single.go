@@ -1,25 +1,5 @@
 package single
 
-//import "sync"
-//
-//type singleton behavioral {
-//}
-//
-//var ins *singleton
-//var mu sync.Mutex
-//
-////懒汉式
-//func GetIns() *singleton {
-//	if ins == nil {
-//		mu.Lock()
-//		if ins == nil {
-//			ins = &singleton{}
-//		}
-//		mu.Unlock()
-//	}
-//	return ins
-//}
-
 import (
 	"sync"
 )

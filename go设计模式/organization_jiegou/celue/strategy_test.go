@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// 策略模式
 func TestStrategy(t *testing.T) {
 	operator := Operator{}
 
