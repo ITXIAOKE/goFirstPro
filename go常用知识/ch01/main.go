@@ -12,7 +12,7 @@ func main() {
 	myArray:=[...]string{"I","am","stupid","and","weak"}
 	fmt.Println(myArray)
 	for k,v :=range myArray{
-
+		fmt.Println(k,v)
 		switch v {
 		case "stupid":
 			myArray[k]="smart"

@@ -216,7 +216,7 @@ func Stocks(ctx *gin.Context) {
 	return
 }
 
-//部分更新商品状态上架、新品、推荐
+//部分更新商品状态上架、新品、17二叉树推荐
 
 func UpdateStatus(ctx *gin.Context) {
 	goodsStatusForm := forms.GoodsStatusForm{}

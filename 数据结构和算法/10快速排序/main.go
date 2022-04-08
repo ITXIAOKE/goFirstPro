@@ -6,6 +6,10 @@ func main() {
 	fmt.Println(QuickSort([]int{2, 3, 1, 4, 12, 34, 52, 340}))
 }
 
+//func QuickSort(ints []int) interface{} {
+//
+//}
+
 func QuickSort(nums []int) []int {
 	if len(nums) <= 1 {
 		return nums
