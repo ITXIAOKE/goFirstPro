@@ -34,5 +34,5 @@ func backtrack(left int, right int, cur string, res *[]string) {
 }
 
 func main() {
-	fmt.Println(generateParenthesis(3))
+	fmt.Println(generateParenthesis(2))
 }
