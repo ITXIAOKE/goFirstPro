@@ -25,7 +25,7 @@ func mergeSort(nums []int) []int {
 	if len(nums) < 2 { // 分治，两两拆分，一直拆到基础元素才向上递归。
 		return nums
 	}
-	i := len(nums) / 2
+	i := len(nums) / 2           //找到一个中间的位置
 	left := mergeSort(nums[0:i]) // 左侧数据递归拆分
 	right := mergeSort(nums[i:]) // 右侧数据递归拆分
 	result := merge(left, right) // 排序 & 合并
