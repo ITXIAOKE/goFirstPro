@@ -29,15 +29,15 @@ func isPalindrome(s string) bool {
 
 func toUpper(char byte) byte {
 	if isLower(char) {
-		return byte(char - 32)
+		return byte(char - 32) //小写变大写，-32
 	}
 	return char
 }
 
 func isLetterOrNumber(char byte) bool {
-	//数字 48/0---57/9
-	//大写 65A---90Z
-	//小写 97a---122z
+	//字符--》数字 0/48--->9/57
+	//大写字符--》数字 A/65--->Z/90
+	//小写字符--》数字 a/97--->z/122
 	return isUpper(char) || isLower(char) || isNumber(char)
 }
 

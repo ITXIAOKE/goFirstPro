@@ -7,7 +7,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func reverseList(head *ListNode) *ListNode {
+func (head *ListNode) reverseListNode() *ListNode {
 	cur := head
 
 	var pre *ListNode = nil
@@ -34,8 +34,9 @@ func main() {
 	ln3.Next = ln4
 	ln4.Next = ln5
 
-	pre := reverseList(head)
-	fmt.Println(pre.Val)
-
+	listNode := head.reverseListNode()
+	fmt.Println(listNode.Val)
+	fmt.Println(listNode.Next.Val)
+	fmt.Println(listNode.Next.Next.Val)
 
 }

@@ -6,9 +6,9 @@ import (
 )
 
 type Stack struct {
-	MaxTop int //最大存放数
-	Top    int //表示栈顶，栈顶随着入栈的数据而慢慢的增加
-	arr    [5]int
+	MaxTop int    //最大存放数
+	Top    int    //表示栈顶，栈顶随着入栈的数据而慢慢的增加
+	arr    [5]int //数组---》模拟栈 栈是先进后出
 }
 
 //入栈
@@ -20,7 +20,7 @@ func (this *Stack) Push(val int) (err error) {
 	}
 	this.Top++
 	this.arr[this.Top] = val
-	return
+	return nil
 }
 
 //出栈
@@ -50,19 +50,20 @@ func (this *Stack) List() {
 
 func main() {
 	statck := &Stack{
-		MaxTop: 5,
-		Top:    -1,
+		MaxTop: 5,  //表示该栈能存放的最大元素个数为5个
+		Top:    -1, //默认设置栈顶-1， 表示该栈的数据为空
 	}
 	statck.Push(1)
-	//statck.Push(2)
-	//statck.Push(3)
-	//statck.Push(4)
-	//statck.Push(5)
-	//statck.Push(6)
+	statck.Push(2)
+	statck.Push(3)
+	statck.Push(4)
+	statck.Push(5)
+	statck.Push(6)
 
 	statck.List()
 
 	fmt.Println(statck.Pop())
 	statck.Pop()
+
 	statck.List()
 }

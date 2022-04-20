@@ -13,6 +13,7 @@ type HeroNode struct {
 
 //给链表插入一个结点
 //编写第一种插入方法，在单链表的最后插入
+
 func InsertHeroNode(head *HeroNode, newHeroNode *HeroNode) {
 	temp := head
 	for {
@@ -25,6 +26,7 @@ func InsertHeroNode(head *HeroNode, newHeroNode *HeroNode) {
 }
 
 //第二中插入方法，根据no的编号从小到大进行插入
+
 func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 	temp := head
 	flagMy := true
@@ -52,6 +54,7 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 }
 
 //显示链表的所有结点信息
+
 func ListHeroNode(head *HeroNode) {
 	temp := head
 
@@ -69,6 +72,7 @@ func ListHeroNode(head *HeroNode) {
 }
 
 //删除一个结点
+
 func DelHeroNode(head *HeroNode, id int) {
 	temp := head
 	flag := false

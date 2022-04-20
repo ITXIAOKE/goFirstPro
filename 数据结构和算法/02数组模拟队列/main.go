@@ -15,35 +15,38 @@ import (
 */
 
 //使用一个结构体管理队列
+
 type MyQueue struct {
 	maxSize int
 	array   [5]int //数组---》模拟队列
-	front   int    //指向队列对队首
-	rear    int    //指向队列的尾部
+	front   int    //指向队列的队首
+	tail    int    //指向队列的尾部
 }
 
 //添加数据到队列
+
 func (q *MyQueue) AddQueue(val int) (err error) {
-	if q.rear == q.maxSize-1 {
+	if q.tail == q.maxSize-1 {
 		return errors.New("queue full")
 	}
-	q.rear++
-	q.array[q.rear] = val
+	q.tail++
+	q.array[q.tail] = val
 	return
 }
 
 //显示队列，找到队首，然后遍历到队尾
 func (q *MyQueue) showQueue() {
 	fmt.Println("队列当前的情况是：")
-	for i := q.front + 1; i <= q.rear; i++ {
+	for i := q.front + 1; i <= q.tail; i++ {
 		fmt.Printf("array[%d]=%d\t", i, q.array[i])
 	}
 	fmt.Println()
 }
 
 //从队列中取出数据
+
 func (q *MyQueue) GetQueue() (val int, err error) {
-	if q.rear == q.front { //队空
+	if q.tail == q.front { //队空
 		return -1, errors.New("queue empty")
 	}
 	q.front++
@@ -56,7 +59,7 @@ func main() {
 	myqueue := &MyQueue{
 		maxSize: 5,
 		front:   -1,
-		rear:    -1,
+		tail:    -1,
 	}
 	var key string
 	var val int

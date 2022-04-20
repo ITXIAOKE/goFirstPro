@@ -7,7 +7,7 @@ import "fmt"
 func BubbleSort(arr []int) {
 	fmt.Println("排序前", arr)
 
-	for j := 0; j < len(arr)-1; j++ {
+	for j := 0; j < len(arr); j++ {
 		for i := 0; i < len(arr)-1-j; i++ {
 			if arr[i] > arr[i+1] {
 				arr[i], arr[i+1] = arr[i+1], arr[i]
