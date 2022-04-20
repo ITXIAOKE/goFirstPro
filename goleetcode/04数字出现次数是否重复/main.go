@@ -12,20 +12,20 @@ func uniqueOccurrences(arr []int) bool {
 	}
 	fmt.Println(dic)
 
-	countDic := make(map[int]int)
-	for _, v := range dic {
-		_, ok := countDic[v]
-		if !ok {
-			countDic[v]++
+	for _, v := range dic { //这个字典遍历没有顺序123随机显示出来
+		//fmt.Println(v)
+		if v <= 1 {
+			continue
 		} else {
-			return false
+			return true
 		}
+
 	}
-	fmt.Println(countDic)
-	return true
+
+	return false
 }
 
 func main() {
-	arr := []int{1, 2, 2, 1, 1, 3}
+	arr := []int{1,3,6,8,9,80}
 	fmt.Println(uniqueOccurrences(arr))
 }

@@ -17,7 +17,7 @@ func reverse(x int) int {
 		x = x / 10          //123->12  \\1\\0
 		num = num*10 + temp //3||32||321
 
-		if num < -2147483648 || num > 2147483647 {
+		if num < -2147483648 || num > 2147483647 { //2的32次方
 			return 0
 		}
 	}
