@@ -20,6 +20,7 @@ func QuickSort(nums []int) []int {
 	low := make([]int, 0, 0)
 	mid := make([]int, 0, 0)
 	high := make([]int, 0, 0)
+
 	flag := nums[0]
 	mid = append(mid, flag)
 

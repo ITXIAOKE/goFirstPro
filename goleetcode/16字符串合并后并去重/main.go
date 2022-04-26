@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	a := "123abcd爱"
@@ -10,7 +12,7 @@ func main() {
 	//testStr = append(testStr, "haha", "hehe", "hoho", "hehe")
 	//testStr = append(testStr, a)
 	//testStr = append(testStr, b)
-	//fmt.Println(testStr)
+	//fmt.Println(strings.Join([]string{},"/"))
 
 	resStr := []rune(a + b) //这一步将字符串变成rune切片，是为了不乱码进行后面的处理
 	fmt.Println(resStr)
@@ -43,7 +45,7 @@ func main() {
 	//fmt.Println(rStr)
 
 	//var rStr []string
-	rStr:=make([]string,0)
+	rStr := make([]string, 0)
 	mymap := make(map[string]interface{})
 	for _, val := range res {
 		if _, ok := mymap[val]; !ok {
