@@ -24,6 +24,7 @@ func (node *TreeNode) reverse() {
 }
 
 func width(root *TreeNode) [][]int {
+	//var res [][]int
 	res := [][]int{}
 	if root == nil {
 		return res
@@ -34,11 +35,14 @@ func width(root *TreeNode) [][]int {
 
 	for len(q) != 0 {
 		length := len(q)
-		level := []int{}
+		println(length)  //长度是3，代表整个树的深度是3
+		level := []int{} //存放每个层节点上的值
+
 		for i := 0; i < length; i++ {
-			node := q[0]
-			q = q[1:]
+			node := q[0] //取第一层
 			level = append(level, node.Value)
+
+			q = q[1:]
 
 			if node.Left != nil {
 				q = append(q, node.Left)
@@ -47,37 +51,31 @@ func width(root *TreeNode) [][]int {
 				q = append(q, node.Right)
 			}
 		}
+
+		//println(level)
 		if len(level) > 0 {
-			res = append(res, level) //stack
+			res = append(res, level) //stack 将一维切片里面的数据存放进二位切片中
 		}
 	}
 
-	result := [][]int{}
-	//for i := len(res) - 1; i >= 0; i-- {//倒叙打印，从上往上
-	//	result = append(result, res[i])
-	//}
-
-	for i := 0; i < len(res); i++ {//从上到下，
-		result = append(result, res[i])
-	}
-	return result
+	return res
 }
 
 func main() {
 	root := &TreeNode{
-		Value: 7,
+		Value: 8,
 	}
 
-	root.Right = NewTreeNode(5)
-	root.Left = NewTreeNode(4)
+	root.Right = NewTreeNode(6)
+	root.Left = NewTreeNode(5)
 
 	root.Left.Right = NewTreeNode(2)
 	root.Left.Left = NewTreeNode(1)
 
 	root.Right.Left = NewTreeNode(3)
 
-	root.reverse()
+	//root.reverse()
 
-	fmt.Println()
+	fmt.Println("===========")
 	fmt.Println(width(root))
 }
